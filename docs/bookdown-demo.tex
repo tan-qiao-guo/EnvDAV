@@ -4,8 +4,8 @@
 %
 \documentclass[
 ]{book}
-\title{A Minimal Book Example}
-\author{Yihui Xie}
+\title{环境数据分析与可视化}
+\author{谭巧国}
 \date{2022-06-05}
 
 \usepackage{amsmath,amssymb}
@@ -40,8 +40,8 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={A Minimal Book Example},
-  pdfauthor={Yihui Xie},
+  pdftitle={环境数据分析与可视化},
+  pdfauthor={谭巧国},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
 \urlstyle{same} % disable monospaced font for URLs
@@ -133,27 +133,14 @@
 \setcounter{tocdepth}{1}
 \tableofcontents
 }
-\hypertarget{prerequisites}{%
-\chapter{Prerequisites}\label{prerequisites}}
+\hypertarget{ux524dux8a00}{%
+\chapter*{前言}\label{ux524dux8a00}}
+\addcontentsline{toc}{chapter}{前言}
 
-This is a \emph{sample} book written in \textbf{Markdown}. You can use anything that Pandoc's Markdown supports, e.g., a math equation \(a^2 + b^2 = c^2\).
+本网站内容用于厦门大学环境与生态学院研究生课程``环境数据分析与可视化''的教学。内容在持续更新中。
 
-The \textbf{bookdown} package can be installed from CRAN or Github:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\FunctionTok{install.packages}\NormalTok{(}\StringTok{"bookdown"}\NormalTok{)}
-\CommentTok{\# or the development version}
-\CommentTok{\# devtools::install\_github("rstudio/bookdown")}
-\end{Highlighting}
-\end{Shaded}
-
-Remember each Rmd file contains one and only one chapter, and a chapter is defined by the first-level heading \texttt{\#}.
-
-To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): \url{https://yihui.name/tinytex/}.
-
-\hypertarget{intro}{%
-\chapter{Introduction}\label{intro}}
+\hypertarget{rux7684ux57faux7840ux77e5ux8bc6}{%
+\chapter{R的基础知识}\label{rux7684ux57faux7840ux77e5ux8bc6}}
 
 You can label chapter and section titles using \texttt{\{\#label\}} after them, e.g., we can reference Chapter \ref{intro}. If you do not manually label them, there will be automatic labels anyway, e.g., Chapter \ref{methods}.
 
@@ -223,13 +210,13 @@ Sepal.Length & Sepal.Width & Petal.Length & Petal.Width & Species\\
 
 You can write citations, too. For example, we are using the \textbf{bookdown} package \citep{R-bookdown} in this sample book, which was built on top of R Markdown and \textbf{knitr} \citep{xie2015}.
 
-\hypertarget{literature}{%
-\chapter{Literature}\label{literature}}
+\hypertarget{ggplot2ux4f5cux56feux5165ux95e8}{%
+\chapter{\texorpdfstring{\texttt{ggplot2}作图入门}{ggplot2作图入门}}\label{ggplot2ux4f5cux56feux5165ux95e8}}
 
 Here is a review of existing methods.
 
-\hypertarget{methods}{%
-\chapter{Methods}\label{methods}}
+\hypertarget{ux6570ux636eux6574ux7406}{%
+\chapter{数据整理}\label{ux6570ux636eux6574ux7406}}
 
 We describe our methods in this chapter.
 
@@ -252,8 +239,8 @@ We will approximate standard error to 0.027\footnote{\(p\) is unknown but expect
   SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
   \]}
 
-\hypertarget{applications}{%
-\chapter{Applications}\label{applications}}
+\hypertarget{lubridateux5904ux7406ux65f6ux95f4ux6570ux636e}{%
+\chapter{\texorpdfstring{\texttt{lubridate}处理时间数据}{lubridate处理时间数据}}\label{lubridateux5904ux7406ux65f6ux95f4ux6570ux636e}}
 
 Some \emph{significant} applications are demonstrated in this chapter.
 
@@ -263,10 +250,50 @@ Some \emph{significant} applications are demonstrated in this chapter.
 \hypertarget{example-two}{%
 \section{Example two}\label{example-two}}
 
-\hypertarget{final-words}{%
-\chapter{Final Words}\label{final-words}}
+\hypertarget{ux7ed8ux5236ux5730ux56fe}{%
+\chapter{绘制地图}\label{ux7ed8ux5236ux5730ux56fe}}
 
 We have finished a nice book.
+
+\hypertarget{ux76f8ux5173ux6027ux5206ux6790}{%
+\chapter{相关性分析}\label{ux76f8ux5173ux6027ux5206ux6790}}
+
+Here is a review of existing methods.
+
+\hypertarget{ux7ebfux6027ux56deux5f52}{%
+\chapter{线性回归}\label{ux7ebfux6027ux56deux5f52}}
+
+Here is a review of existing methods.
+
+\hypertarget{logisticux56deux5f52}{%
+\chapter{Logistic回归}\label{logisticux56deux5f52}}
+
+Here is a review of existing methods.
+
+\hypertarget{tux68c0ux9a8c}{%
+\chapter{\texorpdfstring{\emph{t}检验}{t检验}}\label{tux68c0ux9a8c}}
+
+Here is a review of existing methods.
+
+\hypertarget{ux5355ux56e0ux7d20ux65b9ux5deeux5206ux6790}{%
+\chapter{单因素方差分析}\label{ux5355ux56e0ux7d20ux65b9ux5deeux5206ux6790}}
+
+Here is a review of existing methods.
+
+\hypertarget{ux591aux56e0ux7d20ux65b9ux5deeux5206ux6790}{%
+\chapter{多因素方差分析}\label{ux591aux56e0ux7d20ux65b9ux5deeux5206ux6790}}
+
+Here is a review of existing methods.
+
+\hypertarget{ux534fux65b9ux5deeux5206ux6790}{%
+\chapter{协方差分析}\label{ux534fux65b9ux5deeux5206ux6790}}
+
+Here is a review of existing methods.
+
+\hypertarget{ux4e3bux6210ux5206ux5206ux6790}{%
+\chapter{主成分分析}\label{ux4e3bux6210ux5206ux5206ux6790}}
+
+Here is a review of existing methods.
 
   \bibliography{book.bib,packages.bib}
 

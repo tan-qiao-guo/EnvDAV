@@ -1,3 +1,33 @@
+--- 
+title: "环境数据分析与可视化"
+author: "谭巧国"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::bs4_book
+split_by: section
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: rstudio/bookdown-demo
+description: "厦门大学环境与生态学院研究生课程"
+---
+
+# 前言 {-}
+
+本网站内容用于厦门大学环境与生态学院研究生课程“环境数据分析与可视化”的教学。内容在持续更新中。
+
+
+
+```{r include=FALSE}
+# automatically create a bib database for R packages
+knitr::write_bib(c(
+  .packages(), 'bookdown', 'knitr', 'rmarkdown'
+), 'packages.bib')
+```
+
+<!--chapter:end:index.Rmd-->
+
 # R的基础知识 {#intro}
 
 ## 科学计算器
@@ -766,4 +796,109 @@ ggsave("myplot_2.pdf", width=359/90, height=239/90) #pdf格式，矢量图
 ## 推荐阅读
 Crawley MJ. The R Book. 2nd ed. Chapter 2. Essentials of the R Language.pp 12-136.
 (有点枯燥，至少读1/3，读不完的之后的学习过程中还可以再回过头读。)
+
+
+<!--chapter:end:01-intro.Rmd-->
+
+# `ggplot2`作图入门
+
+Here is a review of existing methods.
+
+<!--chapter:end:02-ggplot.Rmd-->
+
+# 数据整理
+
+We describe our methods in this chapter.
+
+Math can be added in body using usual syntax like this 
+
+## math example
+
+$p$ is unknown but expected to be around 1/3. Standard error will be approximated
+
+$$
+SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
+$$
+
+You can also use math in footnotes like this^[where we mention $p = \frac{a}{b}$].
+
+We will approximate standard error to 0.027[^longnote]
+
+[^longnote]: $p$ is unknown but expected to be around 1/3. Standard error will be approximated
+
+    $$
+    SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
+    $$
+
+<!--chapter:end:03-dplyr.Rmd-->
+
+# `lubridate`处理时间数据
+
+Some _significant_ applications are demonstrated in this chapter.
+
+## Example one
+
+## Example two
+
+<!--chapter:end:04-lubridate.Rmd-->
+
+# 绘制地图
+
+We have finished a nice book.
+
+<!--chapter:end:05-map.Rmd-->
+
+# 相关性分析
+
+Here is a review of existing methods.
+
+<!--chapter:end:06-correlation.Rmd-->
+
+# 线性回归
+
+Here is a review of existing methods.
+
+<!--chapter:end:07-mlr.Rmd-->
+
+# Logistic回归
+
+Here is a review of existing methods.
+
+<!--chapter:end:08-logistic.Rmd-->
+
+# *t*检验
+
+Here is a review of existing methods.
+
+<!--chapter:end:09-ttest.Rmd-->
+
+# 单因素方差分析
+
+Here is a review of existing methods.
+
+<!--chapter:end:10-anova.Rmd-->
+
+# 多因素方差分析
+
+Here is a review of existing methods.
+
+<!--chapter:end:11-2wayanova.Rmd-->
+
+# 协方差分析
+
+Here is a review of existing methods.
+
+<!--chapter:end:12-ancova.Rmd-->
+
+# 主成分分析
+
+Here is a review of existing methods.
+
+<!--chapter:end:13-pca.Rmd-->
+
+`r if (knitr:::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:14-reference.Rmd-->
 

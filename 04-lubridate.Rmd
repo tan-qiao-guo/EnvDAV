@@ -1,4 +1,4 @@
-# Applications
+# `lubridate`处理时间数据
 
 Some _significant_ applications are demonstrated in this chapter.
 

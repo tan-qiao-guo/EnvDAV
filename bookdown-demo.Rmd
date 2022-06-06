@@ -3,7 +3,7 @@ title: "环境数据分析与可视化"
 author: "谭巧国"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
-output: bookdown::bs4_book
+output: bookdown::gitbook
 split_by: section
 documentclass: book
 bibliography: [book.bib, packages.bib]
@@ -802,7 +802,562 @@ Crawley MJ. The R Book. 2nd ed. Chapter 2. Essentials of the R Language.pp 12-13
 
 # `ggplot2`作图入门
 
-Here is a review of existing methods.
+
+
+### ggplot基本理念  
+
+图层、映射  
+
+
+展开画布，一张空图  
+```{r}
+library(ggplot2)
+
+ggplot()
+```
+
+
+数据有了，但还不知道要画什么图，仍然是一张空图  
+```{r}
+ggplot(mpg)
+```
+
+知道了谁是`x`
+```{r}
+ggplot(mpg)+
+  aes(x = displ)
+```
+
+知道了谁是`y`
+```{r}
+ggplot(mpg)+
+  aes(x = displ)+
+  aes(y = hwy)
+```
+
+知道了要画什么图，图就有了  
+```{r}
+ggplot(mpg)+
+  aes(x = displ)+
+  aes(y = hwy) +
+  geom_point()
+```
+
+
+把`aes()`收进`ggplot()`，代码显得紧凑  
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy))+
+  geom_point()
+```
+
+颜色映射到变量`class`，
+```{r}
+ggplot(mpg, aes(x = displ, y = hwy, color = class))+
+  geom_point()
+```
+
+颜色映射放在ggplot里，会管住所有图层    
+```{r warning=FALSE}
+ggplot(mpg, aes(x = displ, y = hwy, color = class))+
+  geom_point()+
+  geom_smooth()
+```
+
+
+颜色映射放在`geom_point()`里，只能管住`geom_point()`图层，对其他图层不起作用  
+```{r warning=FALSE}
+ggplot(mpg, aes(x = displ, y = hwy))+
+  geom_point(aes(color = class))
+  
+
+ggplot(mpg, aes(x = displ, y = hwy))+
+  geom_point(aes(color = class))+
+  geom_smooth()
+```
+
+
+
+
+## 以R自带的数据**`ToothGrowth`**为例
+先用敲入代码**`?ToothGrowth`**来了解一下数据。
+>The Effect of Vitamin C on Tooth Growth in Guinea Pigs (豚鼠)  
+> Description  
+> The response is the length of odontoblasts (cells responsible for tooth growth) in 60 guinea pigs. Each animal received one of three dose levels of vitamin C (0.5, 1, and 2 mg/day) by one of two delivery methods, orange juice or ascorbic acid (a form of vitamin C and coded as VC).  
+
+> Format  
+> A data frame with 60 observations on 3 variables.  
+
+>[,1]	len	numeric	Tooth length  .red[第1列是数值变量，牙齿长度]  
+>[,2]	supp	factor	Supplement type (VC or OJ) .red[第2列是因子，补充剂类型，维C还是橙汁]  
+>[,3]	dose	numeric	Dose in milligrams/day  .red[第3列是数值变量，补充剂的剂量]  
+
+> References
+> Crampton, E. W. (1947). The growth of the odontoblast of the incisor teeth as a criterion of vitamin C intake of the guinea pig. The Journal of Nutrition, 33(5), 491–504. doi: 10.1093/jn/33.5.491.
+
+
+
+---
+
+##了解一下**`ToothGrowth`**的内容
+
+先用**`head()`**来看看数据长什么样：
+
+```{r}
+head(ToothGrowth)
+```
+再用**`str()`**具体了解一下数据概况：
+```{r}
+str(ToothGrowth)
+```
+
+---
+
+## 开始作图  
+
+* 使用`ggplot()`作图，需先加载`ggplot2`程序包  
+* 可以略去“`x=`”，“`y=`”，使代码更简洁；第1个数默认给x，第2个默认给y
+
+
+```{r}
+library(ggplot2) #加载ggplot2包
+
+ggplot(ToothGrowth, aes(x=dose, y=len))+
+  geom_point()
+```
+
+
+```{r}
+#简洁代码：
+ggplot(ToothGrowth, aes(dose, len))+
+  geom_point()
+  
+```
+
+
+
+
+## 用颜色"**`color=`**"区分不同处理  
+
+* 将颜色（`color`）映射（mapping）到补充剂类别（`supp`）上，即用不同颜色区分“VC”和“橙汁”数据  
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, color=supp))+
+  geom_point()  
+  
+```
+
+
+
+
+
+## 用形状"**`shape=`**"进一步区分不同处理
+
+- 将点的形状映射到补充剂类别上，即用不同形状区分“VC”和“橙汁”数据    
+- 黑白打印、色盲友好  
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, color=supp,shape=supp))+
+  geom_point()  
+  
+```
+
+
+
+## 用"**`stat_summary()`**"添加平均值
+
+- 我们喜欢看平均值  
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, 
+color=supp, shape=supp))+
+  geom_point()+
+  stat_summary(geom="line", fun="mean")
+  
+```
+]
+
+
+
+
+
+## 用"**`stat_summary()`**"添加平均值
+
+- 去掉散点，加上平均值对应的点  
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, 
+color=supp, shape=supp))+
+ #geom_point()+ #加上井号的作用：使这行代码变为注释，不运行
+  stat_summary(geom="line", fun="mean")+
+ stat_summary(geom="point", fun="mean")
+  
+```
+
+
+
+
+
+---
+
+## 用"**`stat_summary()`**"添加误差棒
+
+- 计算标准差的函数是`sd()`；误差棒：`errorbar`
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, 
+color=supp, shape=supp))+
+  stat_summary(geom="line", fun="mean")+
+  stat_summary(geom="point", fun="mean")+
+  stat_summary(geom="errorbar", fun.min=function(x) mean(x)-sd(x),          fun.max=function(x) mean(x)+sd(x)) #自定义函数计算标准差；还有很多其他方法，目前这个方法最容易理解
+  
+```
+
+
+
+
+
+## 用"**`stat_summary()`**"添加误差棒
+
+- 美化一下误差棒
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, 
+color=supp, shape=supp))+
+  stat_summary(geom="line", fun="mean")+
+  stat_summary(geom="point", fun="mean")+
+  stat_summary(geom="errorbar", fun.min=function(x) mean(x)-sd(x), fun.max=function(x) mean(x)+sd(x), width=0.1) #把误差棒变窄，试试改为0
+  
+```
+
+
+
+
+ 我的数据不是这种格式啊!  
+
+
+
+
+```{r echo=FALSE, warning=FALSE, message=FALSE}
+library(dplyr)
+d_tooth <- ToothGrowth %>%
+  group_by(supp, dose) %>%
+  summarise(mean = mean(len), 
+            sd = sd(len))
+
+d_tooth$mean <- round(d_tooth$mean, 2)
+d_tooth$sd <- round(d_tooth$sd, 2)
+
+d_tooth_wide <- cbind(d_tooth[1:3,],d_tooth[4:6,])
+
+```
+
+
+
+```{r, echo=FALSE}
+
+knitr::kable(d_tooth, format = "html")
+```
+
+
+
+##  甚至是这样的
+
+```{r, echo=FALSE}
+knitr::kable(d_tooth_wide, format = "html")
+
+```
+
+
+
+  ## 这样的数据不方便统计分析，.red[以后别这样了]
+
+- 左边的长表格格式整齐，R可以直接处理，但缺点是丢失了原始信息
+- 右边的宽表格R不能直接处理（可以转化，之后课程会讲）
+
+
+
+
+## 这样才是好的格式，这叫.blue2[**Tidy Data**]
+
+```{r eval=require('DT'),  echo=FALSE}
+DT::datatable(
+  ToothGrowth,
+  fillContainer = FALSE, options = list(pageLength = 8)
+)
+```
+
+
+
+## Tidy Data 整齐数据  
+
+> ### Tidy data is data where:
+
+> ### Each variable is in a column. .red[每1列对应1个变量]
+> ### Each observation is a row. .red[每1行对应1个样本、1次观察]
+> ### Each value is a cell. .red[每1格包含1个值]
+
+.footnote[
+[阅读材料：What is “Tidy Data”? https://www.r-bloggers.com/what-is-tidy-data](https://www.r-bloggers.com/what-is-tidy-data/)
+]
+
+
+
+### 修改细节，使之规范   
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=dose, y=len, 
+color=supp, shape=supp))+
+  theme_bw()+ #使用黑白主题，默认的是灰色主题
+  stat_summary(geom="line", fun="mean")+
+  stat_summary(geom="point", fun="mean")+
+  stat_summary(geom="errorbar", fun.min=function(x) mean(x)-sd(x), fun.max=function(x) mean(x)+sd(x), width=0.1)+
+  labs(x="Dose (mg/day)", #x轴标签
+      y="Tooth length (mm)", #y轴标签
+      color="Supplement", #颜色标签
+      shape="Supplement")+ #形状标签，与颜色的一致
+  scale_y_continuous(limits=c(0, NA))+ #y轴取值范围
+  theme(legend.position=c(0.8, 0.2), #图例的位置，左下角为(0,0),右上角为(1,1)
+        legend.background = element_blank(), #使图例方框背景透明
+        legend.key = element_blank()) #使图例符号背景透明
+```
+
+
+
+##`ggasve()`保存
+
+- 保存下来的图片显示质量比预览的效果更好一些
+```r
+ggsave("tooth_1.png", width=280/90, height=224/90, dpi=600)
+```
+
+## 当然，用“均值+标准差”格式的数据也可以作图
+
+
+将此数据命名为**`d_tooth`**  
+
+```{r, echo=FALSE}
+
+knitr::kable(d_tooth, format = "html")
+```
+
+- **`d_tooth`**可以通过以下代码得到：  
+
+```{r}
+library(dplyr)
+d_tooth <- ToothGrowth %>%
+  group_by(supp, dose) %>%
+  summarise_at(vars(len), funs(mean, sd))
+```
+
+
+
+## 当然，用“均值+标注差”格式的数据也可以作图
+
+- **用`geom_line()`画折线；`geom_errorbar()`画误差棒**
+
+
+```{r}
+ ggplot(d_tooth, aes(x=dose, y=mean, 
+ color=supp, shape=supp))+
+   theme_bw()+ 
+   geom_point()+ #画点
+   geom_line()+ #画线
+   geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.1)+ #画误差棒，注意误差棒的上下限需用aes()映射到mean和sd上
+   labs(x="Dose (mg/day)", 
+        y="Tooth length (mm)", 
+        color=NULL, #去掉了颜色标签
+        shape=NULL)+ #去掉了形状标签
+   scale_y_continuous(limits=c(0, NA))+ 
+   theme(legend.position=c(0.8, 0.2), 
+         legend.background = element_blank(), 
+         legend.key = element_blank()) 
+  
+```
+
+
+
+
+## 用`geom_col()`画柱状图
+- 不要用`geom_bar()`画柱状图--不是不可以，只是不是按你想的那样
+
+
+```{r}
+ggplot(d_tooth, aes(x=dose, y=mean, color=supp))+
+   geom_col()+
+   geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.1)
+
+```
+
+
+
+这不是我们想要的
+
+
+
+### 柱子的颜色用**`fill`**，柱子的边框才是**`color`**
+### 若有多组柱子，需要`dodge`让他们错开，否则默认`stack`堆叠
+
+
+```{r}
+ggplot(d_tooth, aes(x=dose, y=mean,  fill=supp))+
+  geom_col(position="dodge")+
+   geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.1)
+
+```
+
+
+ 
+
+### 用**`position = position_dodge()`**，错开多组误差棒
+
+
+```{r}
+ggplot(d_tooth, aes(x=dose, y=mean, fill=supp))+
+   geom_col(position="dodge")+
+   geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.1,
+                 position=position_dodge(width=0.45))
+
+```
+ 
+
+
+### 把x轴的`dose`变为`factor`类型，使柱子之间等间隔
+
+
+```{r}
+  ggplot(d_tooth, aes(x=factor(dose), y=mean, fill=supp))+
+   geom_col(position="dodge")+
+   geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd), width=0.1,
+                  position=position_dodge(width=0.9)) #注意width也改为0.9，这个可以试错出来
+
+```
+ 
+
+## 修改细节，使之规范  
+
+
+```{r}
+ggplot(d_tooth, aes(x=factor(dose), y=mean, fill=supp))+
+  theme_bw()+
+  geom_col(position="dodge", width = 0.7)+
+  geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd, color=supp), width=0.1, position=position_dodge(width=0.7))+
+  labs(x=expression("Dose (mg"~d^"-1"*")"),
+       y="Tooth length (mm)",
+       fill=NULL, color=NULL)+
+  theme(legend.position=c(0.1, 0.86),
+        legend.background = element_blank(),
+        legend.key = element_blank())
+```
+
+
+##柱状图完成，`ggasve()`保存
+
+- 除了默认的颜色土一点，基本达到发表的要求了（颜色以后我们专题讨论）
+
+```r
+ggsave("tooth_2.png", width=316/90, height=232/90, dpi=600)
+```
+
+
+## 直接用`Tidy Data`（`ToothGrowth`）作柱状图 
+
+
+```{r}
+ggplot(ToothGrowth, aes(x=factor(dose), y=len, fill=supp))+
+  theme_bw()+
+  stat_summary(geom="col", fun="mean", position="dodge", width = 0.7)+
+  stat_summary(geom="errorbar", fun.min=function(x) mean(x)-sd(x), fun.max=function(x) mean(x)+sd(x), aes(color=supp), width=0.1, position=position_dodge(width=0.7))+
+  labs(x=expression("Dose (mg"~d^"-1"*")"),
+       y="Tooth length (mm)",
+       fill=NULL, color=NULL)+
+  theme(legend.position=c(0.1, 0.86),
+        legend.background = element_blank(),
+        legend.key = element_blank())
+```
+
+
+
+
+## 用`geom_boxplot()`画箱式图  
+
+
+```{r}
+ggplot(ToothGrowth, aes(dose, len,  color=supp))+
+ geom_boxplot()
+
+```
+
+
+
+
+- **问题出在哪：`dose`是连续变量（`numeric`格式），不适合boxplot，需先转化为`factor`**
+
+
+
+
+## 用`factor()`将数值变量转化为因子  
+
+
+```{r}
+ ggplot(ToothGrowth, aes(factor(dose), len,  color=supp))+
+  geom_boxplot()
+
+```
+
+
+
+
+
+##修饰细节，使之规范   
+
+
+```{r}
+ggplot(ToothGrowth, aes(factor(dose), len,  color=supp))+
+   theme_bw()+
+geom_boxplot()+
+    labs(x=expression("Dose (mg"~d^"-1"*")"),
+        y="Tooth length (mm)", color=NULL)+
+   theme(legend.position=c(0.1, 0.86),
+        legend.background = element_blank(),
+        legend.key = element_blank())
+
+```
+
+
+
+
+
+
+---
+
+## 要点小结
+
+
+图         | 函数
+-----------|--------------------
+点         |`geom_point()`
+线         |`geom_line()`
+柱         |`geom_col()`推荐； `geom_bar()`
+箱         |`geom_boxplot()`
+误差棒     |`geom_errorbar(aes(ymin=mean-sd, ymax=mean+sd))`
+统计-误差棒| `stat_summary(geom="errorbar", fun.min=function(x) mean(x)-sd(x), fun.max=function(x) mean(x)+sd(x))`
+统计-均值点|`stat_summary(geom="point", fun="mean")`
+统计-均值线|`stat_summary(geom="line", fun="mean")`
+
+---
+
+## 阅读作业  
+
+### Hadley Wickham. 2016. ggplot2 Elegant Graphics for Data Analysis.
+- .large2[Chapter 2. Getting Started with ggplot. pp. 11-32]
+- .large2[Chapter 3. Toolbox. pp. 33-74]
 
 <!--chapter:end:02-ggplot.Rmd-->
 

@@ -23,7 +23,7 @@
 <meta name="author" content="谭巧国" />
 
 
-<meta name="date" content="2022-06-05" />
+<meta name="date" content="2022-06-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 
-<link rel="next" href="intro.html"/>
+<link rel="next" href="01-intro.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -52,6 +52,14 @@
 <link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
 <link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
@@ -133,64 +141,221 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li><a href="./">A Minimal Book Example</a></li>
-
+<li><a href="./">
 <li class="divider"></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>前言</a></li>
-<li class="chapter" data-level="1" data-path="intro.html"><a href="intro.html"><i class="fa fa-check"></i><b>1</b> R的基础知识</a>
+<li class="chapter" data-level="1" data-path="01-intro.html"><a href="01-intro.html"><i class="fa fa-check"></i><b>1</b> R的基础知识</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="intro.html"><a href="intro.html#科学计算器"><i class="fa fa-check"></i><b>1.1</b> 科学计算器</a>
+<li class="chapter" data-level="1.1" data-path="01-intro.html"><a href="01-intro.html#科学计算器"><i class="fa fa-check"></i><b>1.1</b> 科学计算器</a>
 <ul>
-<li class="chapter" data-level="1.1.1" data-path="intro.html"><a href="intro.html#取整"><i class="fa fa-check"></i><b>1.1.1</b> 取整</a></li>
-<li class="chapter" data-level="1.1.2" data-path="intro.html"><a href="intro.html#保留有效数字"><i class="fa fa-check"></i><b>1.1.2</b> 保留有效数字</a></li>
-<li class="chapter" data-level="1.1.3" data-path="intro.html"><a href="intro.html#常用运算符"><i class="fa fa-check"></i><b>1.1.3</b> 常用运算符</a></li>
-<li class="chapter" data-level="1.1.4" data-path="intro.html"><a href="intro.html#逻辑运算"><i class="fa fa-check"></i><b>1.1.4</b> 逻辑运算</a></li>
+<li class="chapter" data-level="1.1.1" data-path="01-intro.html"><a href="01-intro.html#取整"><i class="fa fa-check"></i><b>1.1.1</b> 取整</a></li>
+<li class="chapter" data-level="1.1.2" data-path="01-intro.html"><a href="01-intro.html#保留有效数字"><i class="fa fa-check"></i><b>1.1.2</b> 保留有效数字</a></li>
+<li class="chapter" data-level="1.1.3" data-path="01-intro.html"><a href="01-intro.html#常用运算符"><i class="fa fa-check"></i><b>1.1.3</b> 常用运算符</a></li>
+<li class="chapter" data-level="1.1.4" data-path="01-intro.html"><a href="01-intro.html#逻辑运算"><i class="fa fa-check"></i><b>1.1.4</b> 逻辑运算</a></li>
 </ul></li>
-<li class="chapter" data-level="1.2" data-path="intro.html"><a href="intro.html#变量赋值"><i class="fa fa-check"></i><b>1.2</b> 变量赋值</a></li>
-<li class="chapter" data-level="1.3" data-path="intro.html"><a href="intro.html#变量取名规则"><i class="fa fa-check"></i><b>1.3</b> 变量取名规则</a></li>
-<li class="chapter" data-level="1.4" data-path="intro.html"><a href="intro.html#变量类型"><i class="fa fa-check"></i><b>1.4</b> 变量类型</a></li>
-<li class="chapter" data-level="1.5" data-path="intro.html"><a href="intro.html#常用的数据类型"><i class="fa fa-check"></i><b>1.5</b> 常用的数据类型</a></li>
-<li class="chapter" data-level="1.6" data-path="intro.html"><a href="intro.html#数据类型强制转化coercing"><i class="fa fa-check"></i><b>1.6</b> 数据类型强制转化（<code>coercing</code>）</a></li>
-<li class="chapter" data-level="1.7" data-path="intro.html"><a href="intro.html#缺失值na和无穷大inf"><i class="fa fa-check"></i><b>1.7</b> 缺失值（<code>NA</code>）和无穷大（<code>Inf</code>）</a>
+<li class="chapter" data-level="1.2" data-path="01-intro.html"><a href="01-intro.html#变量赋值"><i class="fa fa-check"></i><b>1.2</b> 变量赋值</a></li>
+<li class="chapter" data-level="1.3" data-path="01-intro.html"><a href="01-intro.html#变量取名规则"><i class="fa fa-check"></i><b>1.3</b> 变量取名规则</a></li>
+<li class="chapter" data-level="1.4" data-path="01-intro.html"><a href="01-intro.html#变量类型"><i class="fa fa-check"></i><b>1.4</b> 变量类型</a></li>
+<li class="chapter" data-level="1.5" data-path="01-intro.html"><a href="01-intro.html#常用的数据类型"><i class="fa fa-check"></i><b>1.5</b> 常用的数据类型</a></li>
+<li class="chapter" data-level="1.6" data-path="01-intro.html"><a href="01-intro.html#数据类型强制转化coercing"><i class="fa fa-check"></i><b>1.6</b> 数据类型强制转化（<code>coercing</code>）</a></li>
+<li class="chapter" data-level="1.7" data-path="01-intro.html"><a href="01-intro.html#缺失值na和无穷大inf"><i class="fa fa-check"></i><b>1.7</b> 缺失值（<code>NA</code>）和无穷大（<code>Inf</code>）</a></li>
+<li class="chapter" data-level="1.8" data-path="01-intro.html"><a href="01-intro.html#向量vector"><i class="fa fa-check"></i><b>1.8</b> 向量（vector）</a>
 <ul>
-<li class="chapter" data-level="1.7.1" data-path="intro.html"><a href="intro.html#修改为折线图"><i class="fa fa-check"></i><b>1.7.1</b> 修改为折线图</a></li>
-<li class="chapter" data-level="1.7.2" data-path="intro.html"><a href="intro.html#修改颜色设置"><i class="fa fa-check"></i><b>1.7.2</b> 修改颜色设置</a></li>
-<li class="chapter" data-level="1.7.3" data-path="intro.html"><a href="intro.html#修改坐标轴名称"><i class="fa fa-check"></i><b>1.7.3</b> 修改坐标轴名称</a></li>
+<li class="chapter" data-level="1.8.1" data-path="01-intro.html"><a href="01-intro.html#用函数c-生成向量"><i class="fa fa-check"></i><b>1.8.1</b> 用函数<code>c( )</code>生成向量</a></li>
+<li class="chapter" data-level="1.8.2" data-path="01-intro.html"><a href="01-intro.html#用-seq生成等差序列"><i class="fa fa-check"></i><b>1.8.2</b> 用 <code>seq()</code>生成等差序列</a></li>
+<li class="chapter" data-level="1.8.3" data-path="01-intro.html"><a href="01-intro.html#用符号生成连续自然数序列"><i class="fa fa-check"></i><b>1.8.3</b> 用<code>:</code>符号生成连续自然数序列</a></li>
+<li class="chapter" data-level="1.8.4" data-path="01-intro.html"><a href="01-intro.html#用rep重复元素生成向量"><i class="fa fa-check"></i><b>1.8.4</b> 用<strong><code>rep()</code></strong>重复元素，生成向量</a></li>
+<li class="chapter" data-level="1.8.5" data-path="01-intro.html"><a href="01-intro.html#向量信息提取与运算"><i class="fa fa-check"></i><b>1.8.5</b> 向量信息提取与运算</a></li>
+<li class="chapter" data-level="1.8.6" data-path="01-intro.html"><a href="01-intro.html#针对向量的统计运算"><i class="fa fa-check"></i><b>1.8.6</b> 针对向量的统计运算</a></li>
 </ul></li>
-<li class="chapter" data-level="1.8" data-path="intro.html"><a href="intro.html#ggplot作图"><i class="fa fa-check"></i><b>1.8</b> <code>ggplot</code>作图</a></li>
-<li class="chapter" data-level="1.9" data-path="intro.html"><a href="intro.html#保存图片"><i class="fa fa-check"></i><b>1.9</b> 保存图片</a>
+<li class="chapter" data-level="1.9" data-path="01-intro.html"><a href="01-intro.html#矩阵matrix"><i class="fa fa-check"></i><b>1.9</b> 矩阵（matrix）</a>
 <ul>
-<li class="chapter" data-level="1.9.1" data-path="intro.html"><a href="intro.html#第一种方法"><i class="fa fa-check"></i><b>1.9.1</b> 第一种方法</a></li>
+<li class="chapter" data-level="1.9.1" data-path="01-intro.html"><a href="01-intro.html#用matrix函数生成一个矩阵"><i class="fa fa-check"></i><b>1.9.1</b> 用<code>matrix()</code>函数生成一个矩阵</a></li>
 </ul></li>
-<li class="chapter" data-level="1.10" data-path="intro.html"><a href="intro.html#保存图片-1"><i class="fa fa-check"></i><b>1.10</b> 保存图片</a>
+<li class="chapter" data-level="1.10" data-path="01-intro.html"><a href="01-intro.html#数据表data-frame"><i class="fa fa-check"></i><b>1.10</b> 数据表（data frame）</a>
 <ul>
-<li class="chapter" data-level="1.10.1" data-path="intro.html"><a href="intro.html#第二种方法"><i class="fa fa-check"></i><b>1.10.1</b> 第二种方法</a></li>
+<li class="chapter" data-level="1.10.1" data-path="01-intro.html"><a href="01-intro.html#用data.frame函数生成一个数据表"><i class="fa fa-check"></i><b>1.10.1</b> 用<code>data.frame()</code>函数生成一个数据表</a></li>
+<li class="chapter" data-level="1.10.2" data-path="01-intro.html"><a href="01-intro.html#引用data.frame中的信息"><i class="fa fa-check"></i><b>1.10.2</b> 引用<code>data.frame</code>中的信息</a></li>
+<li class="chapter" data-level="1.10.3" data-path="01-intro.html"><a href="01-intro.html#查看base-r自带的数据"><i class="fa fa-check"></i><b>1.10.3</b> 查看base R自带的数据</a></li>
+<li class="chapter" data-level="1.10.4" data-path="01-intro.html"><a href="01-intro.html#查看数据表的常用命令"><i class="fa fa-check"></i><b>1.10.4</b> 查看数据表的常用命令</a></li>
+<li class="chapter" data-level="1.10.5" data-path="01-intro.html"><a href="01-intro.html#查看数据表的其他性质"><i class="fa fa-check"></i><b>1.10.5</b> 查看数据表的其他性质</a></li>
+<li class="chapter" data-level="1.10.6" data-path="01-intro.html"><a href="01-intro.html#合并数据表"><i class="fa fa-check"></i><b>1.10.6</b> 合并数据表</a></li>
 </ul></li>
-<li class="chapter" data-level="1.11" data-path="intro.html"><a href="intro.html#推荐阅读"><i class="fa fa-check"></i><b>1.11</b> 推荐阅读</a></li>
-</ul></li>
-<li class="chapter" data-level="2" data-path="ggplot2作图入门.html"><a href="ggplot2作图入门.html"><i class="fa fa-check"></i><b>2</b> <code>ggplot2</code>作图入门</a></li>
-<li class="chapter" data-level="3" data-path="数据整理.html"><a href="数据整理.html"><i class="fa fa-check"></i><b>3</b> 数据整理</a>
+<li class="chapter" data-level="1.11" data-path="01-intro.html"><a href="01-intro.html#读入数据"><i class="fa fa-check"></i><b>1.11</b> 读入数据</a></li>
+<li class="chapter" data-level="1.12" data-path="01-intro.html"><a href="01-intro.html#输出数据"><i class="fa fa-check"></i><b>1.12</b> 输出数据</a></li>
+<li class="chapter" data-level="1.13" data-path="01-intro.html"><a href="01-intro.html#base-r简单作图"><i class="fa fa-check"></i><b>1.13</b> Base R简单作图</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="数据整理.html"><a href="数据整理.html#math-example"><i class="fa fa-check"></i><b>3.1</b> math example</a></li>
+<li class="chapter" data-level="1.13.1" data-path="01-intro.html"><a href="01-intro.html#默认的plot函数"><i class="fa fa-check"></i><b>1.13.1</b> 默认的<code>plot()</code>函数</a></li>
+<li class="chapter" data-level="1.13.2" data-path="01-intro.html"><a href="01-intro.html#修改为折线图"><i class="fa fa-check"></i><b>1.13.2</b> 修改为折线图</a></li>
+<li class="chapter" data-level="1.13.3" data-path="01-intro.html"><a href="01-intro.html#修改颜色设置"><i class="fa fa-check"></i><b>1.13.3</b> 修改颜色设置</a></li>
+<li class="chapter" data-level="1.13.4" data-path="01-intro.html"><a href="01-intro.html#修改坐标轴名称"><i class="fa fa-check"></i><b>1.13.4</b> 修改坐标轴名称</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="lubridate处理时间数据.html"><a href="lubridate处理时间数据.html"><i class="fa fa-check"></i><b>4</b> <code>lubridate</code>处理时间数据</a>
+<li class="chapter" data-level="1.14" data-path="01-intro.html"><a href="01-intro.html#ggplot作图"><i class="fa fa-check"></i><b>1.14</b> <code>ggplot</code>作图</a></li>
+<li class="chapter" data-level="1.15" data-path="01-intro.html"><a href="01-intro.html#保存图片"><i class="fa fa-check"></i><b>1.15</b> 保存图片</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="lubridate处理时间数据.html"><a href="lubridate处理时间数据.html#example-one"><i class="fa fa-check"></i><b>4.1</b> Example one</a></li>
-<li class="chapter" data-level="4.2" data-path="lubridate处理时间数据.html"><a href="lubridate处理时间数据.html#example-two"><i class="fa fa-check"></i><b>4.2</b> Example two</a></li>
+<li class="chapter" data-level="1.15.1" data-path="01-intro.html"><a href="01-intro.html#第一种方法"><i class="fa fa-check"></i><b>1.15.1</b> 第一种方法</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="绘制地图.html"><a href="绘制地图.html"><i class="fa fa-check"></i><b>5</b> 绘制地图</a></li>
-<li class="chapter" data-level="6" data-path="相关性分析.html"><a href="相关性分析.html"><i class="fa fa-check"></i><b>6</b> 相关性分析</a></li>
-<li class="chapter" data-level="7" data-path="线性回归.html"><a href="线性回归.html"><i class="fa fa-check"></i><b>7</b> 线性回归</a></li>
-<li class="chapter" data-level="8" data-path="logistic回归.html"><a href="logistic回归.html"><i class="fa fa-check"></i><b>8</b> Logistic回归</a></li>
-<li class="chapter" data-level="9" data-path="t检验.html"><a href="t检验.html"><i class="fa fa-check"></i><b>9</b> <em>t</em>检验</a></li>
-<li class="chapter" data-level="10" data-path="单因素方差分析.html"><a href="单因素方差分析.html"><i class="fa fa-check"></i><b>10</b> 单因素方差分析</a></li>
-<li class="chapter" data-level="11" data-path="多因素方差分析.html"><a href="多因素方差分析.html"><i class="fa fa-check"></i><b>11</b> 多因素方差分析</a></li>
-<li class="chapter" data-level="12" data-path="协方差分析.html"><a href="协方差分析.html"><i class="fa fa-check"></i><b>12</b> 协方差分析</a></li>
-<li class="chapter" data-level="13" data-path="主成分分析.html"><a href="主成分分析.html"><i class="fa fa-check"></i><b>13</b> 主成分分析</a></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
-<li class="divider"></li>
-<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-
+<li class="chapter" data-level="1.16" data-path="01-intro.html"><a href="01-intro.html#保存图片-1"><i class="fa fa-check"></i><b>1.16</b> 保存图片</a>
+<ul>
+<li class="chapter" data-level="1.16.1" data-path="01-intro.html"><a href="01-intro.html#第二种方法"><i class="fa fa-check"></i><b>1.16.1</b> 第二种方法</a></li>
+<li class="chapter" data-level="1.16.2" data-path="01-intro.html"><a href="01-intro.html#推荐阅读"><i class="fa fa-check"></i><b>1.16.2</b> 推荐阅读</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="03-dplyr.html"><a href="03-dplyr.html"><i class="fa fa-check"></i><b>2</b> <code>ggplot2</code>作图入门</a>
+<ul>
+<li class="chapter" data-level="2.0.1" data-path="03-dplyr.html"><a href="03-dplyr.html#ggplot基本理念"><i class="fa fa-check"></i><b>2.0.1</b> ggplot基本理念</a></li>
+<li class="chapter" data-level="2.1" data-path="03-dplyr.html"><a href="03-dplyr.html#以r自带的数据toothgrowth为例"><i class="fa fa-check"></i><b>2.1</b> 以R自带的数据<strong><code>ToothGrowth</code></strong>为例</a></li>
+<li class="chapter" data-level="2.2" data-path="03-dplyr.html"><a href="03-dplyr.html#开始作图"><i class="fa fa-check"></i><b>2.2</b> 开始作图</a></li>
+<li class="chapter" data-level="2.3" data-path="03-dplyr.html"><a href="03-dplyr.html#用颜色color区分不同处理"><i class="fa fa-check"></i><b>2.3</b> 用颜色”<strong><code>color=</code></strong>”区分不同处理</a></li>
+<li class="chapter" data-level="2.4" data-path="03-dplyr.html"><a href="03-dplyr.html#用形状shape进一步区分不同处理"><i class="fa fa-check"></i><b>2.4</b> 用形状”<strong><code>shape=</code></strong>”进一步区分不同处理</a></li>
+<li class="chapter" data-level="2.5" data-path="03-dplyr.html"><a href="03-dplyr.html#用stat_summary添加平均值"><i class="fa fa-check"></i><b>2.5</b> 用”<strong><code>stat_summary()</code></strong>”添加平均值</a></li>
+<li class="chapter" data-level="2.6" data-path="03-dplyr.html"><a href="03-dplyr.html#用stat_summary添加平均值-1"><i class="fa fa-check"></i><b>2.6</b> 用”<strong><code>stat_summary()</code></strong>”添加平均值</a></li>
+<li class="chapter" data-level="2.7" data-path="03-dplyr.html"><a href="03-dplyr.html#用stat_summary添加误差棒"><i class="fa fa-check"></i><b>2.7</b> 用”<strong><code>stat_summary()</code></strong>”添加误差棒</a></li>
+<li class="chapter" data-level="2.8" data-path="03-dplyr.html"><a href="03-dplyr.html#用stat_summary添加误差棒-1"><i class="fa fa-check"></i><b>2.8</b> 用”<strong><code>stat_summary()</code></strong>”添加误差棒</a></li>
+<li class="chapter" data-level="2.9" data-path="03-dplyr.html"><a href="03-dplyr.html#甚至是这样的"><i class="fa fa-check"></i><b>2.9</b> 甚至是这样的</a></li>
+<li class="chapter" data-level="2.10" data-path="03-dplyr.html"><a href="03-dplyr.html#这样才是好的格式这叫tidy-data"><i class="fa fa-check"></i><b>2.10</b> 这样才是好的格式，这叫<strong>Tidy Data</strong></a></li>
+<li class="chapter" data-level="2.11" data-path="03-dplyr.html"><a href="03-dplyr.html#tidy-data-整齐数据"><i class="fa fa-check"></i><b>2.11</b> Tidy Data 整齐数据</a>
+<ul>
+<li class="chapter" data-level="2.11.1" data-path="03-dplyr.html"><a href="03-dplyr.html#修改细节使之规范"><i class="fa fa-check"></i><b>2.11.1</b> 修改细节，使之规范</a></li>
+</ul></li>
+<li class="chapter" data-level="2.12" data-path="03-dplyr.html"><a href="03-dplyr.html#当然用均值标准差格式的数据也可以作图"><i class="fa fa-check"></i><b>2.12</b> 当然，用“均值+标准差”格式的数据也可以作图</a></li>
+<li class="chapter" data-level="2.13" data-path="03-dplyr.html"><a href="03-dplyr.html#当然用均值标注差格式的数据也可以作图"><i class="fa fa-check"></i><b>2.13</b> 当然，用“均值+标注差”格式的数据也可以作图</a></li>
+<li class="chapter" data-level="2.14" data-path="03-dplyr.html"><a href="03-dplyr.html#用geom_col画柱状图"><i class="fa fa-check"></i><b>2.14</b> 用<code>geom_col()</code>画柱状图</a>
+<ul>
+<li class="chapter" data-level="2.14.1" data-path="03-dplyr.html"><a href="03-dplyr.html#柱子的颜色用fill柱子的边框才是color"><i class="fa fa-check"></i><b>2.14.1</b> 柱子的颜色用<strong><code>fill</code></strong>，柱子的边框才是<strong><code>color</code></strong></a></li>
+<li class="chapter" data-level="2.14.2" data-path="03-dplyr.html"><a href="03-dplyr.html#若有多组柱子需要dodge让他们错开否则默认stack堆叠"><i class="fa fa-check"></i><b>2.14.2</b> 若有多组柱子，需要<code>dodge</code>让他们错开，否则默认<code>stack</code>堆叠</a></li>
+<li class="chapter" data-level="2.14.3" data-path="03-dplyr.html"><a href="03-dplyr.html#用position-position_dodge错开多组误差棒"><i class="fa fa-check"></i><b>2.14.3</b> 用<strong><code>position = position_dodge()</code></strong>，错开多组误差棒</a></li>
+<li class="chapter" data-level="2.14.4" data-path="03-dplyr.html"><a href="03-dplyr.html#把x轴的dose变为factor类型使柱子之间等间隔"><i class="fa fa-check"></i><b>2.14.4</b> 把x轴的<code>dose</code>变为<code>factor</code>类型，使柱子之间等间隔</a></li>
+</ul></li>
+<li class="chapter" data-level="2.15" data-path="03-dplyr.html"><a href="03-dplyr.html#修改细节使之规范-1"><i class="fa fa-check"></i><b>2.15</b> 修改细节，使之规范</a></li>
+<li class="chapter" data-level="2.16" data-path="03-dplyr.html"><a href="03-dplyr.html#直接用tidy-datatoothgrowth作柱状图"><i class="fa fa-check"></i><b>2.16</b> 直接用<code>Tidy Data</code>（<code>ToothGrowth</code>）作柱状图</a></li>
+<li class="chapter" data-level="2.17" data-path="03-dplyr.html"><a href="03-dplyr.html#用geom_boxplot画箱式图"><i class="fa fa-check"></i><b>2.17</b> 用<code>geom_boxplot()</code>画箱式图</a></li>
+<li class="chapter" data-level="2.18" data-path="03-dplyr.html"><a href="03-dplyr.html#用factor将数值变量转化为因子"><i class="fa fa-check"></i><b>2.18</b> 用<code>factor()</code>将数值变量转化为因子</a></li>
+<li class="chapter" data-level="2.19" data-path="03-dplyr.html"><a href="03-dplyr.html#要点小结"><i class="fa fa-check"></i><b>2.19</b> 要点小结</a></li>
+<li class="chapter" data-level="2.20" data-path="03-dplyr.html"><a href="03-dplyr.html#阅读作业"><i class="fa fa-check"></i><b>2.20</b> 阅读作业</a>
+<ul>
+<li class="chapter" data-level="2.20.1" data-path="03-dplyr.html"><a href="03-dplyr.html#hadley-wickham.-2016.-ggplot2-elegant-graphics-for-data-analysis."><i class="fa fa-check"></i><b>2.20.1</b> Hadley Wickham. 2016. ggplot2 Elegant Graphics for Data Analysis.</a></li>
+</ul></li>
+<li class="chapter" data-level="2.21" data-path="03-dplyr.html"><a href="03-dplyr.html#进阶拟合及结果可视化"><i class="fa fa-check"></i><b>2.21</b> 进阶：拟合及结果可视化</a></li>
+<li class="chapter" data-level="2.22" data-path="03-dplyr.html"><a href="03-dplyr.html#先用head和str来查看数据"><i class="fa fa-check"></i><b>2.22</b> 先用<strong><code>head()</code></strong>和<strong><code>str()</code></strong>来查看数据</a></li>
+<li class="chapter" data-level="2.23" data-path="03-dplyr.html"><a href="03-dplyr.html#散点图是我们对数据进行探索分析的法宝"><i class="fa fa-check"></i><b>2.23</b> 散点图是我们对数据进行探索分析的法宝</a></li>
+<li class="chapter" data-level="2.24" data-path="03-dplyr.html"><a href="03-dplyr.html#均值标准差换一种方法"><i class="fa fa-check"></i><b>2.24</b> 均值+标准差（换一种方法）</a></li>
+<li class="chapter" data-level="2.25" data-path="03-dplyr.html"><a href="03-dplyr.html#对比两种等价的作图方法"><i class="fa fa-check"></i><b>2.25</b> 对比两种等价的作图方法</a></li>
+<li class="chapter" data-level="2.26" data-path="03-dplyr.html"><a href="03-dplyr.html#nls非线性拟合米氏方程手动提取拟合结果"><i class="fa fa-check"></i><b>2.26</b> <strong><code>nls()</code></strong>非线性拟合米氏方程：手动提取拟合结果</a></li>
+<li class="chapter" data-level="2.27" data-path="03-dplyr.html"><a href="03-dplyr.html#nls非线性拟合米氏方程自动提取拟合结果-1"><i class="fa fa-check"></i><b>2.27</b> <strong><code>nls()</code></strong>非线性拟合米氏方程：自动提取拟合结果-1</a></li>
+<li class="chapter" data-level="2.28" data-path="03-dplyr.html"><a href="03-dplyr.html#nls非线性拟合米氏方程自动提取拟合结果-2"><i class="fa fa-check"></i><b>2.28</b> <strong><code>nls()</code></strong>非线性拟合米氏方程：自动提取拟合结果-2</a></li>
+<li class="chapter" data-level="2.29" data-path="03-dplyr.html"><a href="03-dplyr.html#生成画拟合线所需的数据"><i class="fa fa-check"></i><b>2.29</b> 生成画拟合线所需的数据</a></li>
+<li class="chapter" data-level="2.30" data-path="03-dplyr.html"><a href="03-dplyr.html#添加拟合线"><i class="fa fa-check"></i><b>2.30</b> 添加拟合线</a></li>
+<li class="chapter" data-level="2.31" data-path="03-dplyr.html"><a href="03-dplyr.html#修饰细节"><i class="fa fa-check"></i><b>2.31</b> 修饰细节</a></li>
+<li class="chapter" data-level="2.32" data-path="03-dplyr.html"><a href="03-dplyr.html#如何在图上添加数学公式"><i class="fa fa-check"></i><b>2.32</b> 如何在图上添加数学公式？</a></li>
+<li class="chapter" data-level="2.33" data-path="03-dplyr.html"><a href="03-dplyr.html#另一个探索数据的超级武器分面facet"><i class="fa fa-check"></i><b>2.33</b> 另一个探索数据的超级武器：分面<strong><code>facet</code></strong></a></li>
+<li class="chapter" data-level="2.34" data-path="03-dplyr.html"><a href="03-dplyr.html#运用for循环语句批量拟合11组数据"><i class="fa fa-check"></i><b>2.34</b> 运用<code>for()</code>循环语句，批量拟合11组数据</a></li>
+<li class="chapter" data-level="2.35" data-path="03-dplyr.html"><a href="03-dplyr.html#生成画11条拟合线的数据"><i class="fa fa-check"></i><b>2.35</b> 生成画11条拟合线的数据</a></li>
+<li class="chapter" data-level="2.36" data-path="03-dplyr.html"><a href="03-dplyr.html#画11条拟合线"><i class="fa fa-check"></i><b>2.36</b> 画11条拟合线</a></li>
+<li class="chapter" data-level="2.37" data-path="03-dplyr.html"><a href="03-dplyr.html#修改细节"><i class="fa fa-check"></i><b>2.37</b> 修改细节</a></li>
+<li class="chapter" data-level="2.38" data-path="03-dplyr.html"><a href="03-dplyr.html#目前的数据存在哪些问题"><i class="fa fa-check"></i><b>2.38</b> 目前的数据存在哪些问题：</a>
+<ul>
+<li class="chapter" data-level="2.38.1" data-path="03-dplyr.html"><a href="03-dplyr.html#数据太大冗余信息过多"><i class="fa fa-check"></i><b>2.38.1</b> 1. 数据太大，冗余信息过多</a></li>
+<li class="chapter" data-level="2.38.2" data-path="03-dplyr.html"><a href="03-dplyr.html#存在干重湿重两种不同的单位"><i class="fa fa-check"></i><b>2.38.2</b> 2. 存在干重、湿重两种不同的单位</a></li>
+</ul></li>
+<li class="chapter" data-level="2.39" data-path="03-dplyr.html"><a href="03-dplyr.html#整理数据用select筛选数据的特定列"><i class="fa fa-check"></i><b>2.39</b> 整理数据：用<code>select()</code>筛选数据的特定列</a>
+<ul>
+<li class="chapter" data-level="2.39.1" data-path="03-dplyr.html"><a href="03-dplyr.html#使用列名来选择列"><i class="fa fa-check"></i><b>2.39.1</b> 使用“列名”来选择列</a></li>
+<li class="chapter" data-level="2.39.2" data-path="03-dplyr.html"><a href="03-dplyr.html#也可以用列号进行选择"><i class="fa fa-check"></i><b>2.39.2</b> 也可以用“列号”进行选择</a></li>
+</ul></li>
+<li class="chapter" data-level="2.40" data-path="03-dplyr.html"><a href="03-dplyr.html#数据整理-用filter筛选数据的特定行"><i class="fa fa-check"></i><b>2.40</b> 数据整理： 用<code>filter()</code>筛选数据的特定行</a>
+<ul>
+<li class="chapter" data-level="2.40.1" data-path="03-dplyr.html"><a href="03-dplyr.html#筛选出牡蛎和贻贝的数据"><i class="fa fa-check"></i><b>2.40.1</b> 筛选出牡蛎和贻贝的数据</a></li>
+<li class="chapter" data-level="2.40.2" data-path="03-dplyr.html"><a href="03-dplyr.html#检查一下新的数据"><i class="fa fa-check"></i><b>2.40.2</b> 检查一下新的数据</a></li>
+<li class="chapter" data-level="2.40.3" data-path="03-dplyr.html"><a href="03-dplyr.html#再次查看数据的单位"><i class="fa fa-check"></i><b>2.40.3</b> 再次查看数据的单位</a></li>
+<li class="chapter" data-level="2.40.4" data-path="03-dplyr.html"><a href="03-dplyr.html#也可以用base-r的subset筛选数据"><i class="fa fa-check"></i><b>2.40.4</b> 也可以用base R的<code>subset()</code>筛选数据</a></li>
+</ul></li>
+<li class="chapter" data-level="2.41" data-path="03-dplyr.html"><a href="03-dplyr.html#注意区分filter和select"><i class="fa fa-check"></i><b>2.41</b> 注意区分<code>filter()</code>和<code>select()</code></a>
+<ul>
+<li class="chapter" data-level="2.41.1" data-path="03-dplyr.html"><a href="03-dplyr.html#筛选出cd的数据"><i class="fa fa-check"></i><b>2.41.1</b> 筛选出Cd的数据</a></li>
+<li class="chapter" data-level="2.41.2" data-path="03-dplyr.html"><a href="03-dplyr.html#可以作个图看看数据了"><i class="fa fa-check"></i><b>2.41.2</b> 可以作个图看看数据了</a></li>
+<li class="chapter" data-level="2.41.3" data-path="03-dplyr.html"><a href="03-dplyr.html#去掉只有2个数据点的物种"><i class="fa fa-check"></i><b>2.41.3</b> 去掉只有2个数据点的物种</a></li>
+<li class="chapter" data-level="2.41.4" data-path="03-dplyr.html"><a href="03-dplyr.html#研究问题1牡蛎贻贝谁的cd浓度高"><i class="fa fa-check"></i><b>2.41.4</b> 研究问题1：牡蛎、贻贝，谁的Cd浓度高？</a></li>
+<li class="chapter" data-level="2.41.5" data-path="03-dplyr.html"><a href="03-dplyr.html#按中位值排序"><i class="fa fa-check"></i><b>2.41.5</b> 按中位值排序</a></li>
+<li class="chapter" data-level="2.41.6" data-path="03-dplyr.html"><a href="03-dplyr.html#按中位值排序-1"><i class="fa fa-check"></i><b>2.41.6</b> 按中位值排序</a></li>
+<li class="chapter" data-level="2.41.7" data-path="03-dplyr.html"><a href="03-dplyr.html#修饰细节-1"><i class="fa fa-check"></i><b>2.41.7</b> 修饰细节</a></li>
+</ul></li>
+<li class="chapter" data-level="2.42" data-path="03-dplyr.html"><a href="03-dplyr.html#用group_by和summarise分组计算均值标准差"><i class="fa fa-check"></i><b>2.42</b> 用<code>group_by</code>和<code>summarise</code>分组计算均值、标准差</a></li>
+<li class="chapter" data-level="2.43" data-path="03-dplyr.html"><a href="03-dplyr.html#研究问题2"><i class="fa fa-check"></i><b>2.43</b> 研究问题2：</a>
+<ul>
+<li class="chapter" data-level="2.43.1" data-path="03-dplyr.html"><a href="03-dplyr.html#zn浓度高的牡蛎是否cd浓度也高"><i class="fa fa-check"></i><b>2.43.1</b> Zn浓度高的牡蛎，是否Cd浓度也高？</a></li>
+<li class="chapter" data-level="2.43.2" data-path="03-dplyr.html"><a href="03-dplyr.html#整理数据"><i class="fa fa-check"></i><b>2.43.2</b> 整理数据</a></li>
+<li class="chapter" data-level="2.43.3" data-path="03-dplyr.html"><a href="03-dplyr.html#查看整理好的数据"><i class="fa fa-check"></i><b>2.43.3</b> 查看整理好的数据</a></li>
+<li class="chapter" data-level="2.43.4" data-path="03-dplyr.html"><a href="03-dplyr.html#把数据切分成cd数据zn数据"><i class="fa fa-check"></i><b>2.43.4</b> 把数据切分成<code>Cd</code>数据、<code>Zn</code>数据</a></li>
+<li class="chapter" data-level="2.43.5" data-path="03-dplyr.html"><a href="03-dplyr.html#运用inner_join合并两套数据"><i class="fa fa-check"></i><b>2.43.5</b> 运用<code>inner_join()</code>合并两套数据</a></li>
+<li class="chapter" data-level="2.43.6" data-path="03-dplyr.html"><a href="03-dplyr.html#join系列函数"><i class="fa fa-check"></i><b>2.43.6</b> <code>join</code>系列函数</a></li>
+<li class="chapter" data-level="2.43.7" data-path="03-dplyr.html"><a href="03-dplyr.html#作散点图初步了解数据"><i class="fa fa-check"></i><b>2.43.7</b> 作散点图初步了解数据</a></li>
+<li class="chapter" data-level="2.43.8" data-path="03-dplyr.html"><a href="03-dplyr.html#使用双对数坐标"><i class="fa fa-check"></i><b>2.43.8</b> 使用双对数坐标</a></li>
+<li class="chapter" data-level="2.43.9" data-path="03-dplyr.html"><a href="03-dplyr.html#按不同物种分面作图"><i class="fa fa-check"></i><b>2.43.9</b> 按不同物种分面作图</a></li>
+<li class="chapter" data-level="2.43.10" data-path="03-dplyr.html"><a href="03-dplyr.html#添加拟合线帮助判断趋势"><i class="fa fa-check"></i><b>2.43.10</b> 添加拟合线，帮助判断趋势</a></li>
+<li class="chapter" data-level="2.43.11" data-path="03-dplyr.html"><a href="03-dplyr.html#美化一下"><i class="fa fa-check"></i><b>2.43.11</b> 美化一下</a></li>
+<li class="chapter" data-level="2.43.12" data-path="03-dplyr.html"><a href="03-dplyr.html#成品"><i class="fa fa-check"></i><b>2.43.12</b> 成品</a></li>
+</ul></li>
+<li class="chapter" data-level="2.44" data-path="03-dplyr.html"><a href="03-dplyr.html#要点小结-1"><i class="fa fa-check"></i><b>2.44</b> 要点小结</a></li>
+<li class="chapter" data-level="2.45" data-path="03-dplyr.html"><a href="03-dplyr.html#要点小结-2"><i class="fa fa-check"></i><b>2.45</b> 要点小结</a>
+<ul>
+<li class="chapter" data-level="2.45.1" data-path="03-dplyr.html"><a href="03-dplyr.html#运算符"><i class="fa fa-check"></i><b>2.45.1</b> “<code>%&gt;%</code>”运算符</a></li>
+</ul></li>
+<li class="chapter" data-level="2.46" data-path="03-dplyr.html"><a href="03-dplyr.html#练习"><i class="fa fa-check"></i><b>2.46</b> 练习</a></li>
+<li class="chapter" data-level="2.47" data-path="03-dplyr.html"><a href="03-dplyr.html#阅读"><i class="fa fa-check"></i><b>2.47</b> 阅读：</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="04-lubridate.html"><a href="04-lubridate.html"><i class="fa fa-check"></i><b>3</b> <code>lubridate</code>处理时间数据</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="04-lubridate.html"><a href="04-lubridate.html#时间格式转化"><i class="fa fa-check"></i><b>3.1</b> 时间格式转化</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="04-lubridate.html"><a href="04-lubridate.html#字符串转化为日期date格式"><i class="fa fa-check"></i><b>3.1.1</b> 字符串转化为日期（<code>Date</code>）格式</a></li>
+<li class="chapter" data-level="3.1.2" data-path="04-lubridate.html"><a href="04-lubridate.html#字符串转化为日期date格式-1"><i class="fa fa-check"></i><b>3.1.2</b> 字符串转化为日期（<code>Date</code>）格式</a></li>
+<li class="chapter" data-level="3.1.3" data-path="04-lubridate.html"><a href="04-lubridate.html#字符串转化为日期-时间date-time格式"><i class="fa fa-check"></i><b>3.1.3</b> 字符串转化为日期-时间（<code>date-time</code>）格式</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="04-lubridate.html"><a href="04-lubridate.html#时间信息提取"><i class="fa fa-check"></i><b>3.2</b> 时间信息提取</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="04-lubridate.html"><a href="04-lubridate.html#提取日期数据中的信息"><i class="fa fa-check"></i><b>3.2.1</b> 提取日期数据中的信息</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="04-lubridate.html"><a href="04-lubridate.html#提取日期-时间数据中的信息"><i class="fa fa-check"></i><b>3.3</b> 提取日期-时间数据中的信息</a></li>
+<li class="chapter" data-level="3.4" data-path="04-lubridate.html"><a href="04-lubridate.html#时区"><i class="fa fa-check"></i><b>3.4</b> 时区</a></li>
+<li class="chapter" data-level="3.5" data-path="04-lubridate.html"><a href="04-lubridate.html#时区-1"><i class="fa fa-check"></i><b>3.5</b> 时区</a></li>
+<li class="chapter" data-level="3.6" data-path="04-lubridate.html"><a href="04-lubridate.html#时间计算"><i class="fa fa-check"></i><b>3.6</b> 时间计算</a></li>
+<li class="chapter" data-level="3.7" data-path="04-lubridate.html"><a href="04-lubridate.html#时间数据可视化"><i class="fa fa-check"></i><b>3.7</b> 时间数据可视化</a>
+<ul>
+<li class="chapter" data-level="3.7.1" data-path="04-lubridate.html"><a href="04-lubridate.html#厦门空气质量数据分析"><i class="fa fa-check"></i><b>3.7.1</b> 厦门空气质量数据分析</a></li>
+<li class="chapter" data-level="3.7.2" data-path="04-lubridate.html"><a href="04-lubridate.html#年厦门pm2.5逐日变化趋势"><i class="fa fa-check"></i><b>3.7.2</b> 2021年厦门PM2.5逐日变化趋势</a></li>
+<li class="chapter" data-level="3.7.3" data-path="04-lubridate.html"><a href="04-lubridate.html#年厦门pm2.5逐日变化趋势调整细节"><i class="fa fa-check"></i><b>3.7.3</b> 2021年厦门PM2.5逐日变化趋势：调整细节</a></li>
+</ul></li>
+<li class="chapter" data-level="3.8" data-path="04-lubridate.html"><a href="04-lubridate.html#strptime查看日期时间格式"><i class="fa fa-check"></i><b>3.8</b> <code>?strptime</code>查看日期时间格式</a></li>
+<li class="chapter" data-level="3.9" data-path="04-lubridate.html"><a href="04-lubridate.html#合并四年数据用于分析"><i class="fa fa-check"></i><b>3.9</b> 合并四年数据用于分析</a>
+<ul>
+<li class="chapter" data-level="3.9.1" data-path="04-lubridate.html"><a href="04-lubridate.html#了解合并数据的结构尤其是数据类型"><i class="fa fa-check"></i><b>3.9.1</b> 了解合并数据的结构，尤其是数据类型</a></li>
+</ul></li>
+<li class="chapter" data-level="3.10" data-path="04-lubridate.html"><a href="04-lubridate.html#数据整理"><i class="fa fa-check"></i><b>3.10</b> 数据整理</a></li>
+<li class="chapter" data-level="3.11" data-path="04-lubridate.html"><a href="04-lubridate.html#缺哪天的数据"><i class="fa fa-check"></i><b>3.11</b> 缺哪天的数据？</a></li>
+<li class="chapter" data-level="3.12" data-path="04-lubridate.html"><a href="04-lubridate.html#总体趋势厦门aqi的4年趋势"><i class="fa fa-check"></i><b>3.12</b> 总体趋势：厦门AQI的4年趋势</a></li>
+<li class="chapter" data-level="3.13" data-path="04-lubridate.html"><a href="04-lubridate.html#总体趋势一并查看6项指标"><i class="fa fa-check"></i><b>3.13</b> 总体趋势：一并查看6项指标</a></li>
+<li class="chapter" data-level="3.14" data-path="04-lubridate.html"><a href="04-lubridate.html#细看季节趋势pm2.5"><i class="fa fa-check"></i><b>3.14</b> 细看季节趋势：PM2.5</a></li>
+<li class="chapter" data-level="3.15" data-path="04-lubridate.html"><a href="04-lubridate.html#细看各个月份各月份的pm2.5概率密度分布"><i class="fa fa-check"></i><b>3.15</b> 细看各个月份：各月份的PM2.5概率密度分布</a></li>
+<li class="chapter" data-level="3.16" data-path="04-lubridate.html"><a href="04-lubridate.html#对比各月份与总体的pm2.5概率密度分布"><i class="fa fa-check"></i><b>3.16</b> 对比各月份与总体的PM2.5概率密度分布</a></li>
+<li class="chapter" data-level="3.17" data-path="04-lubridate.html"><a href="04-lubridate.html#对比各月份与总体的pm2.5概率密度分布-1"><i class="fa fa-check"></i><b>3.17</b> 对比各月份与总体的PM2.5概率密度分布</a></li>
+<li class="chapter" data-level="3.18" data-path="04-lubridate.html"><a href="04-lubridate.html#季节趋势总览全部参数"><i class="fa fa-check"></i><b>3.18</b> 季节趋势：总览全部参数</a></li>
+<li class="chapter" data-level="3.19" data-path="04-lubridate.html"><a href="04-lubridate.html#工作日-周末趋势pm2.5"><i class="fa fa-check"></i><b>3.19</b> 工作日-周末趋势：PM2.5</a></li>
+<li class="chapter" data-level="3.20" data-path="04-lubridate.html"><a href="04-lubridate.html#昼夜趋势臭氧"><i class="fa fa-check"></i><b>3.20</b> 昼夜趋势：臭氧</a></li>
+<li class="chapter" data-level="3.21" data-path="04-lubridate.html"><a href="04-lubridate.html#昼夜趋势臭氧-1"><i class="fa fa-check"></i><b>3.21</b> 昼夜趋势：臭氧</a></li>
+<li class="chapter" data-level="3.22" data-path="04-lubridate.html"><a href="04-lubridate.html#昼夜趋势臭氧-2"><i class="fa fa-check"></i><b>3.22</b> 昼夜趋势：臭氧</a></li>
+<li class="chapter" data-level="3.23" data-path="04-lubridate.html"><a href="04-lubridate.html#拓展阅读"><i class="fa fa-check"></i><b>3.23</b> 拓展阅读</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="05-map.html"><a href="05-map.html"><i class="fa fa-check"></i><b>4</b> 绘制地图</a></li>
+<li class="chapter" data-level="5" data-path="06-correlation.html"><a href="06-correlation.html"><i class="fa fa-check"></i><b>5</b> 相关性分析</a></li>
+<li class="chapter" data-level="6" data-path="07-mlr.html"><a href="07-mlr.html"><i class="fa fa-check"></i><b>6</b> 线性回归</a></li>
+<li class="chapter" data-level="7" data-path="08-logistic.html"><a href="08-logistic.html"><i class="fa fa-check"></i><b>7</b> Logistic回归</a></li>
+<li class="chapter" data-level="8" data-path="09-ttest.html"><a href="09-ttest.html"><i class="fa fa-check"></i><b>8</b> <em>t</em>检验</a></li>
+<li class="chapter" data-level="9" data-path="10-anova.html"><a href="10-anova.html"><i class="fa fa-check"></i><b>9</b> 单因素方差分析</a></li>
+<li class="chapter" data-level="10" data-path="11-2wayanova.html"><a href="11-2wayanova.html"><i class="fa fa-check"></i><b>10</b> 多因素方差分析</a></li>
+<li class="chapter" data-level="11" data-path="12-ancova.html"><a href="12-ancova.html"><i class="fa fa-check"></i><b>11</b> 协方差分析</a></li>
+<li class="chapter" data-level="12" data-path="13-pca.html"><a href="13-pca.html"><i class="fa fa-check"></i><b>12</b> 主成分分析</a></li>
+<li class="chapter" data-level="" data-path="14-reference.html"><a href="14-reference.html"><i class="fa fa-check"></i>References</a></li>
 </ul>
 
       </nav>
@@ -211,7 +376,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">环境数据分析与可视化</h1>
 <p class="author"><em>谭巧国</em></p>
-<p class="date"><em>2022-06-05</em></p>
+<p class="date"><em>2022-06-07</em></p>
 </div>
 <div id="前言" class="section level1 unnumbered hasAnchor">
 <h1>前言<a href="index.html#前言" class="anchor-section" aria-label="Anchor link to header"></a></h1>
@@ -224,7 +389,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
         </div>
       </div>
 
-<a href="intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="01-intro.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -255,7 +420,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+"link": "https://github.com/tan-qiao-guo/EnvDAV/edit/master/index.Rmd",
 "text": "Edit"
 },
 "history": {
@@ -263,7 +428,7 @@ gitbook.start({
 "text": null
 },
 "view": {
-"link": null,
+"link": "https://github.com/tan-qiao-guo/EnvDAV/blod/master/index.Rmd",
 "text": null
 },
 "download": ["bookdown-demo.pdf", "bookdown-demo.epub"],

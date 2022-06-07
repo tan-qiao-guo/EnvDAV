@@ -1,4 +1,7 @@
 book_filename: "bookdown-demo"
+output_dir: docs
+edit: https://github.com/tan-qiao-guo/EnvDAV/edit/master/%s
+view: https://github.com/tan-qiao-guo/EnvDAV/blod/master/%s
 language:
   ui:
     chapter_name: "Chapter "

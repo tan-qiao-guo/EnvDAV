@@ -273,7 +273,7 @@ knitr::kable(d_tooth_wide, format = "html")
 
 
 
-  ## 这样的数据不方便统计分析，.red[以后别这样了]
+  ## 这样的数据不方便统计分析，以后别这样了
 
 - 左边的长表格格式整齐，R可以直接处理，但缺点是丢失了原始信息
 - 右边的宽表格R不能直接处理（可以转化，之后课程会讲）
@@ -281,7 +281,7 @@ knitr::kable(d_tooth_wide, format = "html")
 
 
 
-## 这样才是好的格式，这叫.blue2[**Tidy Data**]
+## 这样才是好的格式，这叫**Tidy Data**
 
 ```{r eval=require('DT'),  echo=FALSE}
 DT::datatable(
@@ -300,9 +300,8 @@ DT::datatable(
 > ### Each observation is a row. .red[每1行对应1个样本、1次观察]
 > ### Each value is a cell. .red[每1格包含1个值]
 
-.footnote[
+
 [阅读材料：What is “Tidy Data”? https://www.r-bloggers.com/what-is-tidy-data](https://www.r-bloggers.com/what-is-tidy-data/)
-]
 
 
 
@@ -556,3 +555,353 @@ geom_boxplot()+
 ### Hadley Wickham. 2016. ggplot2 Elegant Graphics for Data Analysis.
 - .large2[Chapter 2. Getting Started with ggplot. pp. 11-32]
 - .large2[Chapter 3. Toolbox. pp. 33-74]
+
+
+
+
+
+## 进阶：拟合及结果可视化  
+* R自带的另一套数据**`DNase`**
+> **Elisa assay of DNase**   
+> Description  
+> The DNase data frame has 176 rows and 3 columns of data obtained during development of an ELISA assay for the recombinant protein DNase in rat serum.  
+
+>Source  
+>Davidian, M. and Giltinan, D. M. (1995) Nonlinear Models for Repeated Measurement Data, Chapman & Hall (section 5.2.4, p. 134
+
+###这套数据和我们研究中遇到的数据很类似。用ELISA方法测定大鼠血清中的DNA酶，得到酶浓度和吸光度数据。实验做了11次，每次测定有平行样。
+
+
+## 先用**`head()`**和**`str()`**来查看数据  
+
+```{r }
+head(DNase)
+```
+
+
+
+```{r highlight.output = 2:4}
+str(DNase)
+```
+
+
+注意：`Run`虽然是数字，类型却是`factor`，因此后面`facet`时可以直接操作，而无需转化为`factor`。
+
+
+## 散点图是我们对数据进行探索分析的法宝  
+
+
+
+
+```{r}
+library(ggplot2)
+ggplot(DNase, aes(conc, density))+
+  geom_point()
+```
+
+
+这个数据让你想起了什么？有点像酶反应里的米氏动力学。确定分析方向：用米氏方程去拟合数据
+
+
+
+## 均值+标准差（换一种方法）
+
+
+```{r}
+ggplot(DNase, aes(conc, density))+
+  geom_point(stat="summary", fun="mean")+
+  geom_errorbar(stat="summary", 
+                fun.min=function(x) mean(x)-sd(x), 
+                fun.max=function(x) mean(x)+sd(x), width=0.2)
+
+```
+
+ 
+## 对比两种等价的作图方法  
+
+
+方法1             |   方法2  
+------------|----------------
+`geom_errorbar(stat="summary",...)` | `stat_summary(geom="errorbar",...)`
+`geom_point(stat="summary",...)` | `stat_summary(geom="point",...)`
+`geom_line(stat="summary",...)` | `stat_summary(geom="line",...)`
+... | ...
+
+
+
+## **`nls()`**非线性拟合米氏方程：手动提取拟合结果  
+
+- 米氏方程： $V=\frac{V\text{max}\times C}{K_\text{M}+C}$
+
+- 非线性拟合  
+拟合前，仔细观察原始数据，运用你的智慧大致判断一下Vmax和KM的值
+
+```{r highlight.output = 4:5}
+nls(density ~ conc * Vmax/(KM + conc), data=DNase, start=list(Vmax=2, KM=6) )
+```
+-  手动赋值
+```{r}
+Vmax <- 2.280 
+KM <- 3.682
+```
+
+
+
+
+## **`nls()`**非线性拟合米氏方程：自动提取拟合结果-1  
+
+- 将拟合结果存入**`fit`**
+
+```{r }
+fit <- nls(density ~ conc * Vmax/(KM + conc), data=DNase, start=list(Vmax=2, KM=6) )
+```
+
+
+
+- 查看结果  
+```{r highlight.output=6:7}
+summary(fit)
+```
+
+
+
+
+
+## **`nls()`**非线性拟合米氏方程：自动提取拟合结果-2  
+
+- 查看都储存了哪些信息  
+```{r}
+names(summary(fit)) 
+```
+
+
+
+- 提取我们需要的参数拟合值  
+
+```{r}
+summary(fit)$coefficients
+
+Vmax <- summary(fit)$coefficients[1]
+
+KM <- summary(fit)$coefficients[2]
+```
+
+
+## 生成画拟合线所需的数据  
+
+- 生成数据  
+
+```{r}
+fit_x <- seq(0, 14, length.out=100) #生成100个x，涵盖原始数据范围
+fit_y <- Vmax * fit_x /(KM + fit_x) #将x和参数值代入米氏方程，计算y
+
+
+d_fit <- data.frame(conc=fit_x, density=fit_y) #注意命名和原数据保持一致，可以不一致，但一致的话画图更简单
+```
+
+
+
+- 查看一下所生成的数据  
+
+```{r}
+head(d_fit)
+```
+
+
+## 添加拟合线
+
+
+```{r}
+ggplot(DNase, aes(conc, density))+
+  geom_point(stat="summary", fun="mean")+
+  geom_errorbar(stat="summary", 
+                fun.min=function(x) mean(x)-sd(x), 
+                fun.max=function(x) mean(x)+sd(x), width=0.2)+
+  geom_line(data=d_fit) #不需要设定aes(x=,y=)，因为继承了第1行代码的设定；如果xy名字与原数据不一样，则需设定。
+
+```
+
+
+
+## 修饰细节  
+
+
+```{r}
+ggplot(DNase, aes(conc, density))+
+  theme_bw()+
+  geom_line(data=d_fit, size=0.7, alpha=0.7, color="red2")+
+  geom_point(stat="summary", fun="mean", color="grey30", alpha=0.7)+
+  geom_errorbar(stat="summary", fun.min=function(x) mean(x)-sd(x), fun.max=function(x) mean(x)+sd(x), width=0.2)+
+  labs(x=expression("DNase concentration (ng"~mL^"-1"*")"),
+       y="Optical density")+
+  annotate(geom="text", x=10, y=0.5,label=expression(OD==frac(OD[max], italic(K)[M]+italic(C)))) # 添加公式
+```
+
+
+## 如何在图上添加数学公式？
+
+1. `annotate(geom="text", x=..., y=..., label=...)`
+1. .red[`?plotmath`]查看各种公式的代码  
+
+
+
+- 例如：  
+
+Syntax |	Meaning ||Syntax |	Meaning
+-------|-------------|--|---------|-------------
+x + y	|x plus y ||sqrt(x)	|square root of x
+x - y	|x minus y ||x == y	|x equals y
+x %+-% y	|x plus or minus y ||italic(x)	|draw x in italic font
+x %.% y	|x cdot y ||alpha -- omega	|Greek symbols
+x[i]	|x subscript i ||frac(x, y)	|x over y
+x^2	 |x superscript 2 ||... | ...
+
+
+
+
+## 另一个探索数据的超级武器：分面**`facet`**
+
+
+
+**有两种分面：**  
+- `facet_wrap(~因子)`：针对1个因子，1维分面  
+- `facet_grid(因子1~因子2)`：针对2个因子，2维分面  
+
+```{r}
+
+ggplot(DNase, aes(conc, density))+
+  geom_point()+
+ facet_wrap(~Run) # 针对Run这个因子分面
+```
+
+- **每个Run都单独作图，数据趋势类似**  
+- **每组数据可以单独拟合，看看参数的变异程度**  
+  
+
+
+
+
+## 运用`for()`循环语句，批量拟合11组数据
+
+
+```{r}
+N <- length(unique(DNase$Run)) # 有几组数据？直译：不重复的Run这个向量的长度
+
+Vmax_each <- numeric(N) #生成长度为N的向量，以备存储拟合值
+KM_each <- numeric(N)
+
+#运用循环语句，每次拟合1组数据
+for (i in 1 : N) {
+d_i <- subset(DNase, Run==i) #把第i组数据筛选出来
+fit_i <- nls(density ~ conc * Vmax/(KM + conc), data=d_i, start=list(Vmax=2, KM=6) )
+Vmax_each[i] <- summary(fit_i)$coefficients[1] #第i个拟合结果存入向量第i个位置
+KM_each[i] <- summary(fit_i)$coefficients[2] #同上
+}
+```
+
+
+
+- 将拟合值存入数据表备用
+```{r}
+d_Vmax_KM <- data.frame(Vmax_each, KM_each) 
+
+```
+
+
+
+##查看一下11组拟合结果
+
+```{r}
+d_Vmax_KM
+
+
+```
+
+
+```{r}
+mean(Vmax_each)
+sd(Vmax_each)
+mean(KM_each)
+sd(KM_each)
+
+```
+
+
+## 生成画11条拟合线的数据
+
+```{r}
+fit_x_11 <- rep(seq(0, 14, length.out=100), times=11) #生成等间距x值100个，重复11次
+Vmax_11 <- rep(Vmax_each, each=100) #复制Vmax，复制100份
+KM_11 <- rep(KM_each, each=100) #复制KM，复制100份
+fit_y_11 <- Vmax_11 * fit_x_11 /(KM_11 + fit_x_11) #将以上三者代入米氏方程，计算y（想象一下你熟悉的excel，操作其实是一样的）
+Run <- rep(1:11, each=100) #复制Run编号，复制100份
+
+d_fit_11 <- data.frame(conc=fit_x_11, density=fit_y_11, Run=Run)
+```
+
+
+## 画11条拟合线  
+
+
+```{r} 
+
+ggplot(DNase, aes(conc, density))+
+  geom_point()+
+  facet_wrap(~Run)+
+ geom_line(data=d_fit_11) # 把11条拟合线画上去
+
+```
+
+ 
+
+## 修改细节  
+
+
+```{r} 
+#把这11个Run从1到11重新排好顺序
+DNase$Run <- factor(DNase$Run, 
+                    levels=c("1","2","3","4","5","6",
+                    "7","8","9","10","11")) 
+d_fit_11$Run <- factor(d_fit_11$Run, 
+                    levels=c("1","2","3","4","5","6",
+                    "7","8","9","10","11")) 
+                    
+ggplot(DNase, aes(conc, density))+
+  theme_bw()+
+  geom_point(alpha=0.6)+
+  facet_wrap(~Run)+
+  geom_line(data=d_fit_11, size=0.7, color="red2")+
+    labs(x=expression("DNase concentration (ng"~mL^"-1"*")"),
+         y="Optical density")
+
+```
+
+
+
+---
+## 图上各主题元素的修改方法
+参考此网页：https://ggplot2.tidyverse.org/reference/theme.html
+---
+## 要点小结
+
+**理解两种等价的作图方式**(若有困难，选一种你觉得容易理解的记住)
+- `geom_xxx(stat="summary") == stat_summary(geom="xxx")` 
+
+**添加拟合线** 
+- `nls()`非线性拟合 
+- `summary()`查看、提取拟合结果
+- `seq()`，`rep()`生成作图数据的有力工具
+
+**添加数学公式**
+- `annotate()` 往图上添加公式、文字
+- `?plotmath` 查看数学公式对应的代码
+
+**`facet`分面功能**：数据分析的世界因此而美好
+
+**`for()`循环语句**：把重复的工作交给电脑
+
+
+
+
+
+

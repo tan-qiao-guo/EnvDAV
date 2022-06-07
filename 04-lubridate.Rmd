@@ -1,7 +1,523 @@
 # `lubridate`处理时间数据
 
-Some _significant_ applications are demonstrated in this chapter.
 
-## Example one
 
-## Example two
+ 加载程序包
+```{r message=F, warning=F}
+library(tidyverse) #作图
+library(readxl) #读取excel文件
+library(lubridate) #处理时间数据
+```
+
+## 时间格式转化  
+
+### 字符串转化为日期（`Date`）格式   
+
+
+```{r}
+a <- "20220318" # a是字符格式
+class(a)
+b <- ymd(a) #将a转化为日期格式
+class(b)
+
+# ymd，ydm，mdy，myd等系列函数，`?ymd`查看  
+mdy("03/18/2022") 
+```
+
+
+
+**日期格式自由，均能正确转化**  
+```{r}
+ymd("2022/03/18")
+
+x <- c(20090101, "2009-01-02", "2009 01 03", "2009-1-4", "2009-1, 5", "Created on 2009 1 6", "200901 !!! 07")
+ymd(x)
+```
+
+
+### 字符串转化为日期（`Date`）格式  
+以下两个函数对输入格式有较严格要求
+```{r }
+as.Date("2022-03-12")  # 分隔号-
+as.Date("2022/12/03") #分隔号/
+
+date("2022-03-18") # 分隔号-
+
+date("2022/03/18") #分隔号/
+
+```
+
+
+### 字符串转化为日期-时间（`date-time`）格式
+
+```{r}
+ymd_hms("2011-06-05 12:00:00") #年月日 时分秒
+ymd_hm("2011-06-05 12:23") #年月日 时分；秒自动设置为0
+ymd_h("2011-06-05 12") #年月日 时；分秒自动设置为0
+```
+
+
+
+
+## 时间信息提取  
+  
+
+
+### 提取日期数据中的信息   
+
+
+```{r}
+today() #今天的日期 
+x <- today() 
+
+year(x) # 哪年？
+month(x) #哪月？
+day(x) #哪日？
+```
+
+
+
+```{r}
+wday(x) #一个星期中的第几天？（默认星期天为第1天）
+wday(x, week_start = 1) #一个星期中的第几天？以星期一为第1天
+```
+
+
+## 提取日期-时间数据中的信息  
+
+
+```{r}
+now() #现在时刻
+
+Sys.time() #电脑系统的现在时刻
+y <- now()
+hour(y) #几时？
+minute(y) #几分？
+
+```
+
+
+```{r}
+second(y)  #几秒？
+wday(y, week_start = 1, label = T ) #星期几？（文字表示）
+yday(y) #一年中的第几天？
+week(y) #一年中的第几个星期？
+```
+
+
+
+## 时区  
+
+关于时区设置：`?locales`查询  
+关于时区名称，查看维基百科：
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones  
+
+```{r}
+Sys.timezone() #所在时区：亚洲/上海，即北京时间
+
+OlsonNames() #查询所有时区名称，该数据库由David Olson创立
+```
+
+
+
+## 时区  
+
+```{r}
+ymd_hms(now(), tz = "PRC") #将时间信息的时区设置为中国
+with_tz(now(), tz="Europe/Berlin") #查看其他时区对应的时间，例如柏林
+
+```
+
+
+
+## 时间计算  
+
+
+
+```{r}
+now() #现在时间 
+
+end <- paste(today(), "23:59:59") #今天的最后1秒
+class(end) #是字符串，不是时间格式
+end <- ymd_hms(end) #转化为时间格式
+#今天还剩下多少时间  
+end - now() # 计算两点间的时间长度；有误，时区不同导致
+
+
+```
+
+
+```{r}
+end <- ymd_hms(end, tz="PRC") #时区设置为中国
+end - now() #计算两点间的时间长度；正确
+difftime(end, now()) #另一种方法，计算两点间的时间长度
+
+today()-ymd(19820704) #我出生多少天了
+
+```
+
+  
+## 时间数据可视化  
+
+
+
+### 厦门空气质量数据分析  
+
+数据来源：https://quotsoft.net/air/   
+已下载并整理出厦门2018-2021四年的空气质量数据（csv格式）。
+
+**读取并查看数据：**   
+```{r}
+d2021 <- read.csv("data/xiamen air/xiamen_air_2021.csv") #读取2021年的数据
+names(d2021) #包含PM2.5，PM10，NO2，SO2， O3， CO等污染物，以及日期、小时、AQI等信息
+```
+
+
+
+### 2021年厦门PM2.5逐日变化趋势  
+```{r}
+d2021 %>%
+  mutate(date = ymd(date)) %>%  #将date转化为日期格式（原为字符格式）
+  ggplot(aes(date, PM2.5)) +
+  geom_point()+ #所有点，每个小时1个点
+  stat_summary(geom="line", fun="mean", color="red") #日均值线
+  
+
+```
+
+ 
+ 
+### 2021年厦门PM2.5逐日变化趋势：调整细节  
+
+```{r}
+d2021 %>%
+  mutate(date = ymd(date)) %>% 
+  ggplot(aes(date, PM2.5)) +
+  theme_classic()+
+  geom_point(size=0.3, alpha=0.7, color="grey")+
+  stat_summary(geom="line", fun="mean", color="red2")+ 
+ scale_x_date(date_labels = "%m/%d", breaks = "1 month")+ 
+#x轴时间格式设置，格式设置更多选择，查看?strptime(见下下页)
+  labs(x = "Date",
+       y = ~PM[2.5]~'('*mu*g~m^'-3'*')',
+       title = "Xiamen, 2021")
+
+```
+
+
+
+## `?strptime`查看日期时间格式 
+
+以下摘录部分，替换进.red[`scale_x_date(date_labels = "%x")`]试试以下代码的效果：  
+
+%b
+Abbreviated month name in the current locale on this platform. (Also matches full name on input: in some locales there are no abbreviations of names.) .red[月份文字缩写]
+
+%B
+Full month name in the current locale. (Also matches abbreviated name on input.) .red[月份文字全称]
+
+%d
+Day of the month as decimal number (01–31).
+
+%D
+Date format such as %m/%d/%y: the C99 standard says it should be that exact format (but not all OSes comply). .red[MM/DD/YY格式]
+
+%F
+Equivalent to %Y-%m-%d (the ISO 8601 date format).
+
+%m
+Month as decimal number (01–12). .red[月份，两位数表示]
+
+%x
+Date. Locale-specific on output, "%y/%m/%d" on input.
+
+
+
+
+查看`?strptime`页面信息或上一页节选信息，尝试各种格式   
+
+
+
+```{r}
+format(today(), format = "%Y-%B-%d")
+format(today(), format = "%Y/%b/%d")
+format(today(), format = "%x")
+format(today(), format = "%F")
+```
+
+```{r}
+format(today(), format = "%m-%d")
+format(today(), format = "%D")
+```
+
+
+## 合并四年数据用于分析  
+
+```{r}
+d2018 <- read.csv("data/xiamen air/xiamen_air_2018.csv")
+d2019 <- read.csv("data/xiamen air/xiamen_air_2019.csv")
+d2020 <- read.csv("data/xiamen air/xiamen_air_2020.csv")
+d2021 <- read.csv("data/xiamen air/xiamen_air_2021.csv")
+
+d0 <- rbind(d2018, d2019, d2020, d2021)
+dim(d0) #34330条数据；(4年应该有365.25*24*4 = 35064条，说明缺失几天数据）
+```
+
+
+
+### 了解合并数据的结构，尤其是数据类型  
+```{r}
+str(d0)
+```
+
+
+## 数据整理  
+目前存在问题：（1）`date`还不是日期格式；（2）没有完整的日期时间列
+
+```{r}
+d <- d0 %>% 
+  mutate(time_ymdh = ymd_h(paste(date, hour))) #用ymd_h生成“年月日时”列
+
+sample(d$time_ymdh, 10) #随机选10个查看，确认已是时间格式
+class(d$time_ymdh) #查看格式，确认是时间格式
+
+```
+
+POSIXct = Portable Operating System Interface for Unix calendar time
+
+
+Portable Operating System Interface for Unix calendar time
+
+
+## 缺哪天的数据？  
+用数据可视化的方式，快速找出缺失数据的位置
+```{r}
+
+d %>% 
+  mutate(year = year(time_ymdh), #生成年列
+         month = month(time_ymdh), #生成月份列
+         day = day(time_ymdh)) %>%  #生成日列
+ggplot(aes(x = day, y = month, z = PM2.5))+
+  geom_raster(alpha = 0.5,fill = "blue")+ #作栅格图，找到缺失格
+  facet_wrap(~year)+
+  scale_x_continuous(breaks = 1:31)+
+  scale_y_continuous(breaks = 1:12)+
+  theme(panel.grid.minor = element_blank())
+
+```
+
+
+缺2018年12月22-26日和2019年8月24日数据。  
+可从其他渠道获取数据，将缺失数据补齐。我们暂且忽略缺失数据，继续分析。  
+
+
+
+
+## 总体趋势：厦门AQI的4年趋势
+```{r}
+d %>% 
+  ggplot(aes(time_ymdh, AQI))+ #time_ymdh是日期时间格式，可作为x变量
+  geom_line()+
+  geom_smooth(se=F) #去除置信区间阴影
+
+
+```
+
+总体稳定在50上下，能看到明显的季节波动，空气质量优的天数在增加，污染的天数明显减少。  
+注：AQI = 0-50是优，51-100是良，101-150是轻度污染，151-200是中度污染，201-300是重度污染，300+是严重污染
+
+
+
+## 总体趋势：一并查看6项指标  
+```{r}
+d %>% 
+  select(time_ymdh, PM2.5, PM10, SO2, NO2, O3, CO) %>%  #选出6项指标
+  pivot_longer(cols=2:7, names_to = "parameter", values_to = "value") %>%  #将宽表格转为长表格，要转的数据在2-7列
+  ggplot(aes(time_ymdh, value))+
+  geom_line()+
+  facet_wrap(~parameter, scales="free_y")+
+  geom_smooth(se=F)
+
+
+```
+
+
+
+（1）CO、NO2、PM10、PM2.5、SO2浓度总体下降，极端值频率降低；（2）O3总体稳定；（3）季节波动明显
+
+
+
+## 细看季节趋势：PM2.5  
+将4年数据分开看，计算每日PM2.5均值，查看PM2.5均值在一年中的逐日变化趋势。  
+
+```{r}
+d %>% 
+  mutate(year = year(time_ymdh), #新增列：年份
+         time_d = yday(time_ymdh)) %>% #新增列：一年中的第几天
+  group_by(year, time_d) %>%  #按某年的某日分组
+  summarise(mean = mean(PM2.5, na.rm = T)) %>%  #计算PM2.5均值，注意去除缺失值
+  ggplot(aes(time_d, mean, color=factor(year)))+
+  geom_line()+
+  facet_wrap(~year)+
+  geom_smooth(se=F)+
+  guides(color="none") #去除多余的颜色图例
+
+
+```
+
+
+
+可以看到：PM2.5在冬春季节较高，夏秋季节较低，第200天左右（即7月份）达到最低值。    
+
+
+尝试一下：把PM2.5换成其他参数
+
+
+## 细看各个月份：各月份的PM2.5概率密度分布    
+```{r}
+
+d %>% 
+  mutate(month=month(time_ymdh)) %>% 
+  ggplot(aes(x=PM2.5))+
+  theme_bw()+
+  geom_density(aes(color=factor(month))) #概率密度图，颜色映射到月份
+
+```
+
+
+各月份有明显区别，但混在一起，较难分辨  
+
+
+
+## 对比各月份与总体的PM2.5概率密度分布   
+
+```{r}
+label_month <- month.name # month.name是12个月份的名称，敲一下看看
+names(label_month) <- as.character(1:12) #用于将1-12月修改为January-December
+
+d %>% 
+  mutate(month=month(time_ymdh)) %>% 
+  ggplot(aes(x=PM2.5))+
+  theme_bw()+
+  facet_wrap(~month,labeller = labeller(month = label_month))+
+  geom_density(data=d, fill="grey80", alpha=0.3)+ #所有月份的数据（d中不含month列，不会被分面）
+  geom_density(fill="red", color="red", alpha=0.2)+ #单独各个月份的数据（含month列，会被分面）
+  labs(x=~PM[2.5]~'('*mu*g~m^'-3'*')',
+       y="Probability density")
+       
+```
+
+
+## 对比各月份与总体的PM2.5概率密度分布  
+PM2.5浓度概率密度分布：黑色是总体的分布，红色是各个月份的分布  
+往右拖尾表示污染升高，可以看到6-8月PM2.5明显低于总体均值  
+
+
+
+## 季节趋势：总览全部参数  
+```{r}
+d %>% 
+  select(time_ymdh, PM2.5, PM10, SO2, NO2, O3, CO) %>% 
+  mutate(year = year(time_ymdh),
+         time_d = yday(time_ymdh)) %>% 
+  pivot_longer(cols=2:7, names_to = "parameter", values_to = "value") %>% 
+  ggplot(aes(time_d, value, color=factor(year)))+
+  geom_line(alpha=0.4)+
+  facet_grid(parameter~year, scales="free")+
+  geom_smooth(se=F)+
+  guides(color="none")
+
+```
+
+
+## 工作日-周末趋势：PM2.5   
+
+```{r}
+d %>% 
+  mutate(weekday = wday(time_ymdh, week_start = 1),
+         month=month(time_ymdh)) %>% 
+  group_by(weekday) %>% 
+  summarise(mean = mean(PM2.5, na.rm=T),
+            sd=sd(PM2.5, na.rm=T)) %>% 
+  ggplot(aes(weekday, mean))+
+  geom_ribbon(aes(ymin=mean-sd, ymax=mean+sd), fill="grey70")+ #条带上下限分别是mean+-sd
+  geom_line()+
+  geom_point()+
+  scale_x_continuous(breaks=1:7)
+
+```
+
+
+周末和工作日PM2.5没有明显区别，周五PM2.5可能略低  
+
+
+## 昼夜趋势：臭氧  
+
+```{r}
+d %>% 
+  select(time_ymdh, PM2.5, PM10, SO2, NO2, O3, CO) %>% 
+  mutate(year = year(time_ymdh),
+         time_d = yday(time_ymdh),
+         time_h = hour(time_ymdh)) %>% 
+  ggplot(aes(time_h, O3, group=time_d))+ #用group将每天的数据分组，每天单独画一条线
+  geom_line(alpha=0.1, color="red2")+
+  facet_wrap(~year)
+
+```
+
+
+## 昼夜趋势：臭氧  
+
+臭氧浓度有明显的昼夜变化趋势，上午10点后上升，15点左右达到最高值。  
+
+
+```{r}
+#计算整体的各小时均值（不区分月份）
+d_all <- d %>% 
+ mutate(time_h = hour(time_ymdh)) %>% 
+ group_by(time_h) %>% 
+ summarise(mean= mean(O3, na.rm=T)) 
+
+
+d %>% 
+  mutate(year = year(time_ymdh),
+         time_h = hour(time_ymdh),
+         time_mt = month(time_ymdh)) %>% 
+  group_by(time_mt, time_h) %>% #按月份计算各小时均值
+  summarise(mean= mean(O3, na.rm=T)) %>% 
+  ggplot(aes(time_h, mean))+
+  geom_line(color="red2")+ #红线表示各月份的小时均值
+  geom_line(data=d_all, aes(time_h, mean), inherit.aes=F, color="grey50")+ #灰线表示总体均值
+  facet_wrap(~time_mt)
+
+
+```
+
+
+## 昼夜趋势：臭氧  
+红线：各月份均值；灰线：总体均值  
+各月份之间存在区别：例如1月份O3浓度低，峰值出现时间晚；6-7月份O3浓度低，峰值出现时间早；9-10月份O3浓度高，峰值出现时间与总体均值类似。  
+
+
+---
+## 要点小结  
+
+操作                |函数
+--------------------|---------------------
+将字符转化为时间    |`ymd()`系列   
+                    |`ymd_hms()`系列   
+提取时间信息        |`year()`-年；`month()`-月；`day()`-日
+                    |`hour()`-时；`minute()`-分；`second()`-秒
+                    |第几天：`yday()`-年；`mday()`-月；`wday()`-星期
+坐标轴时间格式设置  |`scale_x_date()`
+                    |`scale_x_datetime()`
+
+
+---
+## 拓展阅读  
+
+https://lubridate.tidyverse.org/
+
+https://r4ds.had.co.nz/dates-and-times.html
+
+

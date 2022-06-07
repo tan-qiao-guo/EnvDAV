@@ -1,0 +1,397 @@
+# 颜色的使用
+
+
+
+## 颜色的使用
+
+* 离散变量-自动配色  
+* 离散变量-手动配色  
+* 连续变量-自动配色  
+* 连续变量-手动配色  
+
+
+
+## 离散变量-自动配色
+`scale_color_brewer(palette=...)`
+`scale_fill_brewer(palette=...)`
+
+```{r}
+p1 <- ggplot(mpg, aes(displ, hwy, color = class))+
+  geom_point()
+p1  
+
+p2 <- ggplot(mpg, aes(class, fill = class))+
+  geom_bar()
+p2
+```
+
+
+### 查看R系统自带配色
+用`?scale_color_brewer`查询  
+
+* 点图--使用各种自动配色:以mpg数据为例  
+Qualitative（定性色）  
+Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3  
+更适合于连续变量。适用于热图、等高线图、地图等  
+
+
+```{r}
+library(RColorBrewer)
+
+RColorBrewer::brewer.pal.info
+  
+RColorBrewer::display.brewer.all()
+RColorBrewer::brewer.pal.info
+rownames(RColorBrewer::brewer.pal.info)
+```
+
+### 使用R系统自带配色
+
+
+
+```{r}
+p1 + scale_color_brewer(palette="Set1")
+p2 + scale_fill_brewer(palette="Set1")
+
+
+p1 + scale_color_brewer(palette="Set3")
+p2 + scale_fill_brewer(palette="Set3")
+
+
+p1 + scale_color_brewer(palette = "Accent")
+p2 + scale_fill_brewer(palette = "Accent") 
+
+p1 + scale_color_brewer(palette = "Dark2")
+p2 + scale_fill_brewer(palette = "Dark2") 
+
+p1+ scale_color_brewer(palette = "BrBG")
+p2 + scale_fill_brewer(palette = "BrBG")
+```
+
+
+### 色盲友好的viridis配色  
+`?scale_fill_viridis_d` 
+
+```{r}
+p1 + scale_color_viridis_d()
+p2 + scale_fill_viridis_d()
+
+
+p1 + scale_color_viridis_d(option = "A")
+p2 + scale_fill_viridis_d(option = "A")
+
+p1 + scale_color_viridis_d(option = "B")
+p2 + scale_fill_viridis_d(option = "B")
+
+p1 + scale_color_viridis_d(option = "F")
+p2 + scale_fill_viridis_d(option = "F")
+```
+
+
+
+* 离散变量-手动配色  
+`scale_color_manual(values=...)`
+`scale_fill_manual(values=...)`
+
+
+```{r}
+p1 + scale_color_manual(values=c("red","orange","yellow","green","blue","grey","black"))
+p2 + scale_fill_manual(values=c("red","orange","yellow","green","blue","grey","black"))
+```
+
+### 如何知道各种颜色的名称？`colors()`
+
+
+
+```{r}
+colors()
+colors()[1:9]
+```
+
+```{r}
+scales::show_col(colors()[100:108])
+```
+
+
+
+### 如何预览各种颜色？ `scales::show_col()`
+```{r}
+library(scales)
+show_col("springgreen")
+
+show_col(c("springgreen","snow4","violetred","skyblue1",
+           "steelblue1","navy", "lightsteelblue3","turquoise2","rosybrown"))
+show_col(colors()[10:20])
+```
+
+### 如何设置出谐调、美观、科学的配色？  
+去配色程序包里找，去配色网站找，去艺术品里找，去大自然找。
+
+ 查看颜色的程序包
+ 
+```{r}
+RColorBrewer::brewer.pal(n=8, name = "Set1")
+
+mycol <- RColorBrewer::brewer.pal(n=8, name = "Set1")
+mycol
+show_col(mycol)
+
+brewer.pal(8, "Set1") #提取“Set1”配色中的颜色代码
+show_col(brewer.pal(8, "Set1"))
+```
+
+ 
+`ggsci` 配色程序包  
+
+```{r}
+
+library(ggsci)
+
+ggsci::pal_aaas()(10)
+show_col(ggsci::pal_aaas()(10))
+
+ggsci::pal_npg()(10)
+show_col(ggsci::pal_npg()(10))
+
+show_col(ggsci::pal_simpsons()(10))
+
+
+ggsci::pal_aaas()(10)
+show_col(ggsci::pal_aaas()(10))
+
+
+
+p1 + scale_color_aaas()
+p2 + scale_fill_aaas()
+
+p1 + scale_color_npg()
+p2 + scale_fill_npg()
+
+p1 + scale_color_manual(values=ggsci::pal_aaas()(10))
+p2 + scale_fill_manual(values=ggsci::pal_aaas()(10))
+
+ggsci::pal_d3()(10)
+show_col(ggsci::pal_d3()(10))
+
+ggsci::pal_futurama()(10)
+show_col(ggsci::pal_futurama()(10))
+  
+ggsci::pal_gsea()(10)
+show_col(ggsci::pal_gsea()(10))
+  
+ggsci::pal_nejm()(10)
+show_col(ggsci::pal_nejm()(10))
+
+ggsci::pal_npg()(10)
+show_col(ggsci::pal_npg()(10))
+```
+
+
+去大自然里找，去生活里找  
+
+```{r}
+pal_cee <- c("#DA1718", "#CE9F9F", "#36536D", "#5092E1", "#D8E8F9", "#526B13",  "#97B325", "#876454", "#C0C0CC")
+show_col(pal_cee)
+
+p1 + scale_color_manual(values=pal_cee)
+p2 + scale_fill_manual(values=pal_cee)
+
+```
+
+去艺术品里找 
+```{r}
+pal_qljs <- c("#1F394D", "#EEC979", "#C4CBC2", "#5A6683", "#BB9555", "#CDE5BC", "#356183", "#24211F", "#E9C3BC")
+show_col(pal_qljs)              
+
+p1 + scale_color_manual(values=pal_qljs)
+p2 + scale_fill_manual(values = pal_qljs)
+```
+
+
+* 网站配色
+https://coolors.co/
+5种颜色一组，地址栏直接获取Hex颜色代码
+
+https://medialab.github.io/iwanthue/
+颜色数量较多时自动配色
+
+
+* Pantone配色
+```{r}
+Pantone <- c("#34558b", "#d13b40", "#ffaf12", "#4ec5a5", "#565d47", "#798fa8", "#fd823e",  "#117893", "#f0daa4", "#eaac9d", "#a2553a", "#72617d", "#b49c73", "#3b3d4b", "#eff0f1", "#a09d9c", "#191970", "#bc243c", "#585ea6", "#F5DF4D")
+
+
+show_col(Pantone)
+```
+
+
+
+## 连续变量-自动配色
+`scale_color_distiller(palette=...)`
+`scale_fill_distiller(palette=...)`
+
+代码：颜色映射到连续变量
+scale_fill_distiller(palette=...)  利用系统的配色方案插值得到连续配色，常用
+
+
+```{r}
+d2 <- tidyr::crossing(x = seq(-10, 10, 0.1), y = seq(-10, 10, 0.1)) %>%
+  mutate(z = sin(sin(x * (sin(y) - cos(x)))) - cos(cos(y * (cos(x) - sin(y)))))
+
+
+p <- ggplot(d2, aes(x, y)) +
+  geom_raster(aes(fill = z))
+p
+p <- p + coord_equal()
+p
+```
+
+
+Sequential（渐变色）
+Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd
+
+Diverging（分裂色）
+BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral
+
+`scale_color_brewer(palette =...)`  使用自动配色方案，常用
+`scale_color_manual(values = c(...))`  手动配色，常用
+
+### 自动配色  
+```{r}
+
+RColorBrewer::brewer.pal.info
+p + scale_fill_distiller(palette = "BrBG")
+p + scale_fill_distiller(palette = "PiYG")
+
+
+p + scale_fill_distiller(palette = "Accent")
+p + scale_fill_distiller(palette = "PuBu")
+
+```
+
+系统自带色盲友好`viridis`配色  
+```{r}
+p + scale_fill_viridis_c(option = "A") 
+p + scale_fill_viridis_c(option = "B") 
+p + scale_fill_viridis_c(option = "C") 
+p + scale_fill_viridis_c(option = "D") 
+p + scale_fill_viridis_c(option = "E") 
+p + scale_fill_viridis_c(option = "F") 
+p + scale_fill_viridis_c(option = "G") 
+p + scale_fill_viridis_c(option = "H") 
+p + scale_fill_viridis_c(option = "I")
+```
+
+
+`scico`程序包，科学的渐变色    
+
+```{r}
+library(scico)
+
+scico::scico_palette_names()
+
+scico::scale_fill_scico(palette = "buda")
+
+  
+p + scale_fill_scico(palette = "buda")
+p + scale_fill_scico(palette = "batlow")
+
+scico_names <- scico::scico_palette_names()
+scico_names 
+p + scale_fill_scico(palette = scico_names[1])
+p + scale_fill_scico(palette = scico_names[2])
+p + scale_fill_scico(palette = scico_names[3])
+p + scale_fill_scico(palette = scico_names[4])
+p + scale_fill_scico(palette = scico_names[5])
+p + scale_fill_scico(palette = scico_names[6])
+p + scale_fill_scico(palette = scico_names[7])
+p + scale_fill_scico(palette = scico_names[8])
+p + scale_fill_scico(palette = scico_names[9])
+p + scale_fill_scico(palette = scico_names[10])
+p + scale_fill_scico(palette = scico_names[11])
+p + scale_fill_scico(palette = scico_names[12])
+p + scale_fill_scico(palette = scico_names[13])
+p + scale_fill_scico(palette = scico_names[14])
+p + scale_fill_scico(palette = scico_names[15])
+p + scale_fill_scico(palette = scico_names[16])
+
+```
+
+
+
+
+
+## 连续变量-手动配色
+颜色映射到连续变量
+`scale_color_gradient(low=..., high=..., na.value=)` 用两种颜色形成梯度
+`scale_color_continuous(low=..., high=...)` 同上
+`scale_color_gradient2(low=..., mid=..., high=...)`用三种颜色形成梯度
+
+```{r}
+p + scale_fill_gradient(low = "white", high = "black", na.value = "grey96")
+```
+
+
+`scale_color_gradientn(colors=...)` 用n种颜色形成梯度
+
+heat.colors(8)  
+terrain.colors(8)
+
+```{r}
+p + scale_fill_gradientn(colors=heat.colors(8), na.value="white")
+```
+
+
+## 颜色RGB码的转化
+```{r}
+rgb(34, 108, 224, max=255) 
+```
+
+## 推荐阅读：
+科技论文中颜色的误用
+Crameri, F., Shephard, G. E., & Heron, P. J. (2020). The misuse of colour in science communication. Nature communications, 11(1), 1-10.
+https://www.nature.com/articles/s41467-020-19160-7
+
+如何配色
+The Elements of Choosing Colors for Great Data Visualization in R
+http://www.sthda.com/english/wiki/the-elements-of-choosing-colors-for-great-data-visualization-in-r
+
+配色工具
+R package colortools
+https://rpubs.com/gaston/colortools
+
+颜色使用需考虑什么
+What to consider when choosing colors for data visualization
+https://blog.datawrapper.de/colors/
+
+检测配色是否色盲友好
+HOW TO STIMULATE COLORBLINDNESS VISION IN R FIGURES
+https://www.datanovia.com/en/blog/how-to-stimulate-colorblindness-vision-in-r-figures/
+
+关于颜色的选择：定性vs定量，单渐变色vs双渐变色，分类vs不分类
+https://blog.datawrapper.de/which-color-scale-to-use-in-data-vis/
+
+
+
+
+### 拼图程序包 `cowplot`  
+```{r}
+p1
+p2
+library(cowplot)
+
+cowplot::plot_grid(p1, p2)
+cowplot::plot_grid(p1, p2, p1, p2,ncol=2, labels=c("a","b","c","d"))
+
+
+cowplot::plot_grid(p1, p2) 
+
+cowplot::plot_grid(p1, p2, ncol=1)
+
+cowplot::plot_grid(p1, p2, labels = c("a","b"))
+
+cowplot::plot_grid(p1, p2, rel_widths = c(1,2))
+
+```
+
+

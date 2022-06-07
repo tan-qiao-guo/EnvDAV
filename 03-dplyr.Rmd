@@ -1,23 +1,671 @@
 # 数据整理
 
-We describe our methods in this chapter.
 
-Math can be added in body using usual syntax like this 
 
-## math example
 
-$p$ is unknown but expected to be around 1/3. Standard error will be approximated
+## 数据整理
+### 3个常用的程序包`dplyr`，`tidyr`，`reshape2`
 
-$$
-SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-$$
 
-You can also use math in footnotes like this^[where we mention $p = \frac{a}{b}$].
+Package     | 常用函数
+------------|--------------------------------------------
+`dplyr`     | `select()`，`filter()`，`mutate()`，`arrange()`
+            |`group_by()`，`summarise()`
+            | `join()`，`%>%`（pipe运算符）
+`tidyr`     | `pivot_longer`，`pivot_wider()`
+`reshape2`  | `melt()`（老但好用）
 
-We will approximate standard error to 0.027[^longnote]
 
-[^longnote]: $p$ is unknown but expected to be around 1/3. Standard error will be approximated
 
-    $$
-    SE = \sqrt(\frac{p(1-p)}{n}) \approx \sqrt{\frac{1/3 (1 - 1/3)} {300}} = 0.027
-    $$
+## `dplyr`名字的含义
+
+https://github.com/tidyverse/dplyr/issues/1857
+
+hadley commented on 26 May 2016
+- The d is for dataframes, the plyr is to evoke pliers. Pronounce however you like.
+
+@kartiksubbarao
+- kartiksubbarao commented on 30 Oct 2017
+The precursor to dplyr was called plyr. The 'ply' in plyr comes from an expansion/refining of the various "apply" functions in R as part of the "split-apply-combine" model/strategy. Here's a good slideset that provides more insight into the plyr name:
+
+https://www.slideshare.net/hadley/plyr-one-data-analytic-strategy
+
+
+
+
+## `tidyverse`大程序包
+
+**1. `ggplot2`，`dplyr`，`tidyr`等都是`tidyverse`系列的**  
+**2. 运行`install.packages("tidyverse")`可以一并安装**  
+
+### `tidyverse`包括以下程序包：  
+
+```{r echo=F, message=F, warning=F}
+library(tidyverse)
+tidyverse_packages()
+```
+
+
+
+## 案例分析：美国贻贝观察数据
+
+### NOAA's National Status and Trends###    
+### NS&T is comprised of three nationwide programs, Benthic Surveillance, .red[Mussel Watch] and Bioeffects that are designed to describe the current status of, and detect changes in, the environmental quality of our nation's .red[estuarine and coastal waters] through environmental monitoring, assessment and related research.### 
+
+
+[数据来源：https://products.coastalscience.noaa.gov/collections/ltmonitoring/nsandt/](https://products.coastalscience.noaa.gov/collections/ltmonitoring/nsandt/)
+
+
+
+### 初步了解数据
+
+- **已从NOAA网站下载数据，将其命名为.red["MusselWatch20170718.csv"]**
+
+- **读取数据**  
+
+```{r}
+d0 <- read.csv("data/MusselWatch20170718.csv") 
+```
+
+- **多少行，多少列?**
+```{r}
+dim(d0) 
+```
+
+有127743行，用excel处理会很棘手
+
+- **各列的名称是什么？**  
+```{r}
+names(d0) 
+```
+
+
+
+### 测定了哪些类型的样品？  
+
+```{r}
+unique(d0$Matrix)
+```
+
+
+
+
+### 测定了哪些污染物？  
+
+```{r}
+unique(d0$Parameter)
+```
+
+
+
+### 数据的单位是什么？  
+
+```{r}
+unique(d0$Unit)
+```
+
+注意：有两种单位，后续分析时需小心，不能把不同单位的数据混在一起分析
+
+
+
+## 提出问题
+
+### 1. 牡蛎和贻贝谁的Cd浓度高？
+### 2. Zn浓度高的牡蛎，是否Cd浓度也高？
+
+<br>
+
+--
+
+## 目前的数据存在哪些问题：
+### 1. 数据太大，冗余信息过多
+
+--
+
+### 2. 存在干重、湿重两种不同的单位
+
+
+
+## 整理数据：用`select()`筛选数据的特定列
+
+### 使用“列名”来选择列 
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+d <- d0 %>%
+  select(Fiscal_Year, Matrix, Scientific_Name, Parameter, Value, Unit) 
+```
+
+
+- 检查一下结果是否符合预期：
+
+```{r}
+names(d)
+```
+
+
+
+### 也可以用“列号”进行选择  
+
+- 选择数据`d0`的第8， 10， 14， 16列，存入`d1`
+
+```{r}
+d1 <- d0 %>%
+  select(8, 10, 14, 16)
+```
+
+删去数据`d0`的第1-7列，第9，15列，存入`d2`
+
+```{r}
+d2 <- d0 %>%
+  select(-c(1:7, 9, 15))
+```
+
+
+
+## 数据整理： 用`filter()`筛选数据的特定行  
+
+### 筛选出牡蛎和贻贝的数据
+
+```{r }
+d_oy.mu <- d %>%
+  filter(Matrix %in% c("Oyster", "Mussel")) #<<
+```
+
+<br>
+
+注意：筛选多个变量用"`%in%`"，筛选单一变量用"`==`"。
+
+
+
+### 检查一下新的数据
+
+```{r }
+dim(d_oy.mu)  #行数大为精简
+```
+```{r highlight.output=1}
+unique(d_oy.mu$Matrix)  #只剩下Oyster和Mussel
+```
+
+
+### 再次查看数据的单位  
+```{r highlight.output=1}
+unique(d_oy.mu$Unit)
+```
+
+数据全部是基于干重的了，可以解除警报 
+
+
+
+### 也可以用base R的`subset()`筛选数据
+
+
+- 代码如下：  
+
+```{r}
+d_oy_2 <- subset(d, Matrix=="Oyster") 
+unique(d_oy_2$Matrix)
+```
+
+<br>
+
+此操作简洁快速，适用于筛选步骤不多的场合
+
+
+## 注意区分`filter()`和`select()` 
+
+`filter()` 用于选择特定的行（即样品、观察)
+
+`select()` 用于选择特定的列（即变量) 
+
+
+
+
+### 筛选出Cd的数据
+
+
+```{r }
+d_oy.mu_Cd <- d_oy.mu %>%
+  filter( Parameter == "Cadmium")
+```
+
+
+- 再检查数据
+
+```{r}
+dim(d_oy.mu_Cd)
+unique(d_oy.mu_Cd$Parameter)
+unique(d_oy.mu_Cd$Scientific_Name)
+```
+发现牡蛎、贻贝共有7个物种，我们把问题1细化到物种
+
+
+### 可以作个图看看数据了  
+
+
+
+
+- 作散点图  
+
+```{r}
+library(ggplot2)
+ggplot(d_oy.mu_Cd, aes(Scientific_Name, Value))+
+  geom_point()
+```
+
+
+
+
+
+###修改成对数坐标###
+
+
+
+当数据之间差异很大时，可以考虑用对数坐标，使数据均匀分散开  
+
+```{r}
+ggplot(d_oy.mu_Cd, aes(Scientific_Name, Value))+
+  geom_point()+
+ scale_y_log10()
+```
+
+
+
+
+### 去掉只有2个数据点的物种
+
+
+```{r}
+d_Cd <- d_oy.mu_Cd %>% filter(Scientific_Name != "Crassostrea gigas")
+ggplot(d_Cd, aes(Scientific_Name, Value))+
+  geom_point()+
+  scale_y_log10()+
+  theme(axis.text.x = element_text(angle=20, hjust=1)) #x轴上名称太长，旋转20°以便显示
+```
+
+
+
+
+
+### 研究问题1：牡蛎、贻贝，谁的Cd浓度高？
+
+
+
+用不同颜色区分牡蛎和贻贝  
+
+```{r}
+ggplot(d_Cd, aes(Scientific_Name, Value, color=Matrix))+
+   geom_point()+
+   scale_y_log10()+
+   theme(axis.text.x = element_text(angle=20, hjust=1))
+```
+
+
+
+### 按中位值排序  
+
+
+
+原先的顺序无规律，不便于传达信息  
+
+```{r}
+ ggplot(d_Cd, aes(reorder(Scientific_Name, -Value, median), Value, color=Matrix))+
+  geom_point()+
+  scale_y_log10()+
+  theme(axis.text.x = element_text(angle=20, hjust=1))
+```
+
+
+
+### 按中位值排序  
+
+- 用到了`reorder()`函数按照中位数降序排列，你可以`reorder()`看看这个函数的用法，思考：按照均值升序如何排列？
+
+- 还有另外一种更容易理解的手动排序方法，即从图上观察高低顺序，然后按顺序排列。这种方法很常用。代码如下：  
+
+```{r}
+d_Cd$Scientific_Name <- factor(
+  d_Cd$Scientific_Name,
+  levels = c(
+    "Mytilus species",
+    "Crassostrea virginica",
+    "Mytilus edulis",
+    "Geukensia demissa",
+    "Ostrea sandvicensis",
+    "Crassostrea rhizophorae"))
+
+```
+
+### 修饰细节  
+- 数据点较多时，可以用小提琴图展现数据的分布，用抖动点充分展现原始数据
+- 颜色的使用考虑色盲读者，考虑黑白打印     
+
+```{r}
+library(ggbeeswarm) #作蜂群图需要
+ggplot(d_Cd, aes(reorder(Scientific_Name, -Value, median), Value, color=Matrix))+
+  theme_bw()+
+ geom_violin(draw_quantiles = 0.5)+ #小提琴图
+ #geom_beeswarm(cex = 0.4, shape = ".", size = 3, alpha = 0.5)+ #蜂群图
+  geom_jitter(shape=".", width = 0.2)+
+  scale_y_log10()+ 
+ annotation_logticks(sides="l")+ #对数刻度
+  labs(x=NULL,
+       y=expression("Cd concentration ("*mu*g~g^"-1"*"dry wt.)"),
+       color=NULL)+
+  theme(axis.text.x=element_text(face="italic", angle=20, hjust=1))+ #x轴斜体，转角
+  theme(legend.position=c(1,1),
+        legend.justification = c(1,1),
+        legend.background = element_blank(),
+        legend.key = element_blank())+ #调整图例位置、背景
+  theme(panel.grid.minor = element_blank())+ #去掉次要网格
+ scale_color_viridis_d(begin=0, end=0.6) #颜色选择，色盲友好
+```
+
+
+
+问题1得到回答了吗？
+
+
+###汇总：把数据整理和画图的全部操作串联
+```{r}
+d0 %>%
+    select(Fiscal_Year, Matrix, Scientific_Name, Parameter, Value, Unit) %>%
+    filter(Matrix %in% c("Oyster", "Mussel")) %>%
+    filter(Parameter == "Cadmium") %>%  
+    filter(Scientific_Name != "Crassostrea gigas") %>% 
+   ggplot(aes(reorder(Scientific_Name, -Value, median), Value, color=Matrix))+ #注意这步，省略了data指定，默认使用上游输送来的数据
+    theme_bw()+
+    geom_violin(draw_quantiles = 0.5)+ #小提琴图
+    #geom_beeswarm(cex = 0.4, shape = ".", size = 3, alpha = 0.5)+ #蜂群图
+    scale_y_log10()+ 
+    annotation_logticks(sides="l")+ #对数刻度
+    labs(x=NULL,
+         y=expression("Cd concentration ("*mu*g~g^"-1"*"dry wt.)"),
+         color=NULL)+
+    theme(axis.text.x=element_text(face="italic", angle=20, hjust=1))+ #x轴斜体，转角
+    theme(legend.position=c(1,1),
+          legend.justification = c(1,1),
+          legend.background = element_blank(),
+          legend.key = element_blank())+ #调整图例位置、背景
+    theme(panel.grid.minor = element_blank())+ #去掉次要网格
+    scale_color_viridis_d(begin=0, end=0.6) #颜色选择，色盲友好  
+```
+
+
+
+## 用`group_by`和`summarise`分组计算均值、标准差  
+
+- 按物种名（`Scientific_Name`）分组，计算浓度（`Value`）的均值（`mean`）和标准差（`sd`）
+```{r warning=FALSE}
+d_Cd_mean <-  d_Cd %>%
+  group_by(Scientific_Name) %>% #<<
+  summarise(mean = mean(Value), sd = sd(Value)) #<<
+
+```
+--
+
+- 查看计算结果 
+
+```{r}
+d_Cd_mean
+
+```
+
+- 以上结果可用于作图，也可用于表格
+
+
+
+## 研究问题2：
+### Zn浓度高的牡蛎，是否Cd浓度也高？  
+
+- 再来观察数据
+- `Sample_ID`可以作为样品配对的依据  
+
+```{r}
+names(d0)
+```
+
+
+### 整理数据
+
+1. 选择这些列：`Sample_ID`, `Fiscal_Year`, `Matrix`, `Scientific_Name`, `Parameter`, `Value`, `Unit`  
+1. 筛选出`Oyster`的数据  
+1. 筛选出`Cadmium`和`Zinc`的数据  
+1. 删去物种*`Crassostrea gigas`*的数据（只有两条数据，缺乏代表性）  
+
+```{r}
+d_oy_Cd.Zn <- d0 %>%
+  select(Sample_ID,
+         Fiscal_Year,
+         Matrix,
+         Scientific_Name,
+         Parameter,
+         Value,
+         Unit) %>%
+  filter(Matrix == "Oyster" &
+      Parameter %in% c("Cadmium", "Zinc") &
+      Scientific_Name != "Crassostrea gigas") 
+```
+
+
+### 查看整理好的数据  
+
+- 有哪些列？
+```{r}
+names(d_oy_Cd.Zn)
+```
+
+- 测定了哪些污染物？
+```{r}
+unique(d_oy_Cd.Zn$Parameter)
+```
+
+
+### 把数据切分成`Cd`数据、`Zn`数据 
+
+- 用`subset()`切出`Cd`的数据
+```{r}
+d_oy_Cd <- subset(d_oy_Cd.Zn, Parameter=="Cadmium")
+dim(d_oy_Cd) # 1718条数据
+```
+
+- 用`subset()`切出`Zn`的数据
+```{r}
+d_oy_Zn <- subset(d_oy_Cd.Zn, Parameter=="Zinc")
+dim(d_oy_Zn) # 也是1718条数据
+```
+
+<br>
+
+两种金属的数据都是1718条，很可能是一一对应的。这需要一一核对两组数据的`Sample_ID`才能确定，那是很大的工作量。这种情况下，`join`系列函数就派上用场了。
+
+
+
+### 运用`inner_join()`合并两套数据  
+
+- 当两组数据的`Sample_ID`相同时，则合并在同一行  
+
+```{r}
+d_oy <-
+  inner_join(d_oy_Cd,
+             d_oy_Zn,
+             by = "Sample_ID", 
+             suffix = c(".Cd", ".Zn"))
+```
+
+- 查看一下数据, 还是1718列，1个也没丢失，说明两组数据确实一一对应
+```{r}
+dim(d_oy)  
+names(d_oy)
+```
+
+
+
+### `join`系列函数  
+
+
+- `inner_join()`  
+return all rows from x where there are matching values in y, and all columns from x and y. If there are multiple matches between x and y, all combination of the matches are returned.    
+
+- `left_join()`  
+return all rows from x, and all columns from x and y. Rows in x with no match in y will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.  
+
+- `right_join()`  
+return all rows from y, and all columns from x and y. Rows in y with no match in x will have NA values in the new columns. If there are multiple matches between x and y, all combinations of the matches are returned.  
+<br>
+- `full_join()`  
+return all rows and all columns from both x and y. Where there are not matching values, returns NA for the one missing.  
+<br>
+阅读： https://dplyr.tidyverse.org/reference/join.html
+
+
+
+### 作散点图初步了解数据
+
+
+```{r}
+ggplot(d_oy, aes(Value.Cd, Value.Zn))+
+  geom_point()
+
+```
+
+
+
+
+
+
+### 使用双对数坐标  
+
+
+
+```{r}
+ggplot(d_oy, aes(Value.Cd, Value.Zn))+
+  geom_point()+
+ scale_x_log10()+
+ scale_y_log10()
+
+```
+
+* 原始数据里有“0”值，取对数后产生负无穷大（-Inf）.作图时会产生警告信息，但不妨碍出图。在坐标轴上可以看到这些点，他们露出了一半。
+
+
+
+
+
+
+
+### 按不同物种分面作图  
+
+
+
+
+```{r}
+ggplot(d_oy, aes(Value.Cd, Value.Zn))+
+  geom_point()+
+  scale_x_log10()+
+  scale_y_log10()+
+  facet_wrap(~Scientific_Name.Zn) # 用Scientific_Name.Cd也一样
+
+```
+- 大部分数据都是关于*Crassostrea virginica*这种牡蛎的  
+
+
+
+
+
+### 添加拟合线，帮助判断趋势  
+
+
+```{r}
+ggplot(d_oy, aes(Value.Cd, Value.Zn))+
+  geom_point()+
+  scale_x_log10()+
+  scale_y_log10()+
+  facet_wrap(~Scientific_Name.Zn)+
+  geom_smooth(method="lm")
+
+```
+- 大部分数据都是关于*Crassostrea virginica*这种牡蛎的  
+
+
+
+
+
+### 美化一下 
+
+```{r}
+
+ggplot(d_oy, aes(Value.Cd, Value.Zn, color= Scientific_Name.Zn))+
+    theme_bw()+
+    geom_point(shape=16, size=1/3, alpha=0.5)+
+    scale_x_log10()+
+    scale_y_log10()+
+    annotation_logticks(sides="bl")+
+    facet_wrap(~Scientific_Name.Zn)+
+    geom_smooth(method="lm", color="black")+
+    labs(x=expression("Cd concentration ("*mu*g~g^"-1"*")"),
+         y=expression("Zn concentration ("*mu*g~g^"-1"*")"))+
+    guides(color="none")+
+    theme(strip.text = element_text(face="italic"))+ #横幅上物种名用斜体
+    scale_color_viridis_d(end=0.6)
+    
+
+```
+
+
+
+### 成品
+
+
+
+问题2得到回答了吗？
+
+
+
+## 要点小结
+
+函数 | 功能
+-----------|-----------------
+`fliter()`  | 根据其值筛选行
+`select()`  | 根据其名筛选列
+`arrange()` | 改变行的排序，从低到高排
+`arrange(desc())`| … 从高到低排
+`mutate()`  | 基于现有变量进行计算，增加新的变量（类比excel里的C1=A1*B1)
+`summarize()`  | 计算统计量（如均值、方差、中位数）
+`pivot_longer()` | 宽数据变长数据
+`pivot_wider()` | 长数据变宽数据
+`melt()` |宽数据变长数据
+`left_join()` |合并数据，保留左侧全部的，右侧没有对应值的则填充NA
+`inner_join()` |合并数据，保留共有的
+...      | ....
+
+
+
+
+## 要点小结
+
+### "`%>%`"运算符  
+
+- 读作pipe，可以翻译成管道（很形象）  
+- pipe将多个操作串联起来，上一操作的结果成为下一操作的对象  
+- 功能类似`ggplot`里的"`+`"号  
+
+
+
+## 练习
+
+1. 分析不同年份贻贝的Cu浓度，看看有何趋势？
+1. 自己观察数据，提出问题，并通过数据分析去回答。
+
+
+
+
+
+## 阅读：
+
+1. Overview of dplyr
+https://dplyr.tidyverse.org/index.html
+
+
+1. Introduction to dplyr
+https://dplyr.tidyverse.org/articles/dplyr.html
+

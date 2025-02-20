@@ -1,4 +1,4 @@
---- 
+---
 title: "环境数据分析与可视化"
 author: "谭巧国"
 date: "`r Sys.Date()`"
@@ -10,13 +10,10 @@ biblio-style: apalike
 link-citations: yes
 github-repo: rstudio/bookdown-demo
 description: "厦门大学环境与生态学院研究生课程"
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
-
-# 前言 {-}
-
-本网站内容用于厦门大学环境与生态学院研究生课程“环境数据分析与可视化”的教学。内容在持续更新中。
-
-
 
 ```{r include=FALSE}
 # automatically create a bib database for R packages
@@ -24,3 +21,52 @@ knitr::write_bib(c(
   .packages(), 'bookdown', 'knitr', 'rmarkdown'
 ), 'packages.bib')
 ```
+
+# 前言 {.unnumbered}
+
+本网站内容用于厦门大学环境与生态学院研究生课程“环境数据分析与可视化”的教学。内容在持续更新中。
+
+
+
+## 课程内容 
+
+-   结合环境生态科学研究的实际需要，系统讲授常用的数据统计分析方法结合实际案例，讲授数据可视化的基本原则和技巧
+
+## 学习预期 
+
+-   数据分析与绘图能力不仅可达到学位论文、期刊论文的要求，还可满足审美、高效传达信息、个性化等需求
+
+-   预期：你可以作出这样的图
+
+-   选择恰当的数据分析方法，准确运用统计分析工具，解读分析结果，针对具体问题进行个性化的数据分析
+
+## 故事：数据可视化的力量
+
+John Snow
+
+
+
+## 参考书籍
+
+-   **科学绘图**
+
+-   Wickham, H. 2016. ggplot2: Elegant Graphics for Data Analysis.
+    Springer.（有中文版，第2版）\
+    在线免费版（第3版）： <https://ggplot2-book.org/>
+
+-   Claus O. Wilke. 2019. Fundamentals of Data Visualization - A Primer
+    on Making Informative and Compelling Figures. O'Reilly Media.
+    在线免费版：<https://clauswilke.com/dataviz/>
+
+-   **数据分析**
+
+-   Wickham, H. 2016. R for Data Science. O'Reilly Media. (有中文版）
+    在线免费版（第2版）：<https://r4ds.hadley.nz/>
+
+-   Field, A., Miles, J., & Field, Z. 2012. Discovering Statistics
+    Using R. Sage Publications. Crawley, M. J. 2012. The R book. John
+    Wiley & Sons.
+
+-   Qian S. 2017. Environmental and Ecological Statistics with R. 2nd
+    ed. CRC Press. Faraway, Julian James. 2015. Linear models with R.
+    2nd ed. CRC Press
